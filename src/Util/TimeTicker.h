@@ -1,4 +1,4 @@
-ï»¿/*
+/*
  * Copyright (c) 2016 The ZLToolKit project authors. All Rights Reserved.
  *
  * This file is part of ZLToolKit(https://github.com/ZLMediaKit/ZLToolKit).
@@ -19,14 +19,12 @@ namespace toolkit {
     class Ticker {
     public:
         /**
-         * æ­¤å¯¹è±¡å¯ä»¥ç”¨äºä»£ç æ‰§è¡Œæ—¶é—´ç»Ÿè®¡ï¼Œä»¥å¯ä»¥ç”¨äºä¸€èˆ¬è®¡æ—¶
-         * @param min_ms å¼€å¯ç æ‰§è¡Œæ—¶é—´ç»Ÿè®¡æ—¶ï¼Œå¦‚æœä»£ç æ‰§è¡Œè€—æ—¶è¶…è¿‡è¯¥å‚æ•°ï¼Œåˆ™æ‰“å°è­¦å‘Šæ—¥å¿—
-         * @param ctx æ—¥å¿—ä¸Šä¸‹æ–‡æ•è·ï¼Œç”¨äºæ•è·å½“å‰æ—¥å¿—ä»£ç æ‰€åœ¨ä½ç½®
-         * @param print_log æ˜¯å¦æ‰“å°ä»£ç æ‰§è¡Œæ—¶é—´
+         * ´Ë¶ÔÏó¿ÉÒÔÓÃÓÚ´úÂëÖ´ĞĞÊ±¼äÍ³¼Æ£¬ÒÔ¿ÉÒÔÓÃÓÚÒ»°ã¼ÆÊ±
+         * @param min_ms ¿ªÆôÂëÖ´ĞĞÊ±¼äÍ³¼ÆÊ±£¬Èç¹û´úÂëÖ´ĞĞºÄÊ±³¬¹ı¸Ã²ÎÊı£¬Ôò´òÓ¡¾¯¸æÈÕÖ¾
+         * @param ctx ÈÕÖ¾ÉÏÏÂÎÄ²¶»ñ£¬ÓÃÓÚ²¶»ñµ±Ç°ÈÕÖ¾´úÂëËùÔÚÎ»ÖÃ
+         * @param print_log ÊÇ·ñ´òÓ¡´úÂëÖ´ĞĞÊ±¼ä
          */
-        Ticker(uint64_t min_ms = 0,
-               LogContextCapture ctx = LogContextCapture(Logger::Instance(), LWarn, __FILE__, "", __LINE__),
-               bool print_log = false) : _ctx(std::move(ctx)) {
+        Ticker(uint64_t min_ms = 0,LogContextCapture ctx = LogContextCapture(Logger::Instance(), LWarn, __FILE__, "", __LINE__),bool print_log = false) : _ctx(std::move(ctx)) {    //¹¹Ôìº¯Êı
             if (!print_log) {
                 _ctx.clear();
             }
@@ -34,7 +32,7 @@ namespace toolkit {
             _min_ms = min_ms;
         }
 
-        ~Ticker() {
+        ~Ticker() {     //Îö¹¹º¯Êı
             uint64_t tm = createdTime();
             if (tm > _min_ms) {
                 _ctx << "take time:" << tm << "ms" << ", thread may be overloaded";
@@ -44,21 +42,21 @@ namespace toolkit {
         }
 
         /**
-         * è·å–åˆ›å»ºæ—¶é—´ï¼Œå•ä½æ¯«ç§’
+         * »ñÈ¡´´½¨Ê±¼ä£¬µ¥Î»ºÁÃë
          */
         uint64_t elapsedTime() const {
             return getCurrentMillisecond() - _begin;
         }
 
         /**
-         * è·å–ä¸Šæ¬¡resetTimeåè‡³ä»Šçš„æ—¶é—´ï¼Œå•ä½æ¯«ç§’
+         * »ñÈ¡ÉÏ´ÎresetTimeºóÖÁ½ñµÄÊ±¼ä£¬µ¥Î»ºÁÃë
          */
         uint64_t createdTime() const {
             return getCurrentMillisecond() - _created;
         }
 
         /**
-         * é‡ç½®è®¡æ—¶å™¨
+         * ÖØÖÃ¼ÆÊ±Æ÷
          */
         void resetTime() {
             _begin = getCurrentMillisecond();
@@ -74,18 +72,18 @@ namespace toolkit {
     class SmoothTicker {
     public:
         /**
-         * æ­¤å¯¹è±¡ç”¨äºç”Ÿæˆå¹³æ»‘çš„æ—¶é—´æˆ³
-         * @param reset_ms æ—¶é—´æˆ³é‡ç½®é—´éš”ï¼Œæ²¡é—´éš”reset_msæ¯«ç§’, ç”Ÿæˆçš„æ—¶é—´æˆ³ä¼šåŒæ­¥ä¸€æ¬¡ç³»ç»Ÿæ—¶é—´æˆ³
+         * ´Ë¶ÔÏóÓÃÓÚÉú³ÉÆ½»¬µÄÊ±¼ä´Á
+         * @param reset_ms Ê±¼ä´ÁÖØÖÃ¼ä¸ô£¬Ã»¼ä¸ôreset_msºÁÃë, Éú³ÉµÄÊ±¼ä´Á»áÍ¬²½Ò»´ÎÏµÍ³Ê±¼ä´Á
          */
-        SmoothTicker(uint64_t reset_ms = 10000) {
+        SmoothTicker(uint64_t reset_ms = 10000) {     //¹¹Ôìº¯Êı
             _reset_ms = reset_ms;
             _ticker.resetTime();
         }
 
-        ~SmoothTicker() {}
+        ~SmoothTicker() {}          //Îö¹¹º¯Êı
 
         /**
-         * è¿”å›å¹³æ»‘çš„æ—¶é—´æˆ³ï¼Œé˜²æ­¢ç”±äºç½‘ç»œæŠ–åŠ¨å¯¼è‡´æ—¶é—´æˆ³ä¸å¹³æ»‘
+         * ·µ»ØÆ½»¬µÄÊ±¼ä´Á£¬·ÀÖ¹ÓÉÓÚÍøÂç¶¶¶¯µ¼ÖÂÊ±¼ä´Á²»Æ½»¬
          */
         uint64_t elapsedTime() {
             auto now_time = _ticker.elapsedTime();
@@ -116,7 +114,7 @@ namespace toolkit {
         }
 
         /**
-         * æ—¶é—´æˆ³é‡ç½®ä¸º0å¼€å§‹
+         * Ê±¼ä´ÁÖØÖÃÎª0¿ªÊ¼
          */
         void resetTime() {
             _first_time = 0;

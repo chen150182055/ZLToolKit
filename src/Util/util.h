@@ -1,4 +1,4 @@
-ï»¿/*
+/*
  * Copyright (c) 2016 The ZLToolKit project authors. All Rights Reserved.
  *
  * This file is part of ZLToolKit(https://github.com/ZLMediaKit/ZLToolKit).
@@ -23,7 +23,7 @@
 
 #if defined(_WIN32)
 #undef FD_SETSIZE
-//ä¿®æ”¹é»˜è®¤64ä¸º1024è·¯
+//ĞŞ¸ÄÄ¬ÈÏ64Îª1024Â·
 #define FD_SETSIZE 1024
 
 #include <winsock2.h>
@@ -75,7 +75,7 @@ namespace toolkit {
         std::stringstream _stream;
     };
 
-//ç¦æ­¢æ‹·è´åŸºç±»
+//½ûÖ¹¿½±´»ùÀà
     class noncopyable {
     protected:
         noncopyable() {}
@@ -83,7 +83,7 @@ namespace toolkit {
         ~noncopyable() {}
 
     private:
-        //ç¦æ­¢æ‹·è´
+        //½ûÖ¹¿½±´
         noncopyable(const noncopyable &that) = delete;
 
         noncopyable(noncopyable &&that) = delete;
@@ -93,7 +93,7 @@ namespace toolkit {
         noncopyable &operator=(noncopyable &&that) = delete;
     };
 
-//å¯ä»¥ä¿å­˜ä»»æ„çš„å¯¹è±¡
+//¿ÉÒÔ±£´æÈÎÒâµÄ¶ÔÏó
     class Any {
     public:
         using Ptr = std::shared_ptr<Any>;
@@ -130,7 +130,7 @@ namespace toolkit {
         std::shared_ptr<void> _data;
     };
 
-//ç”¨äºä¿å­˜ä¸€äº›å¤–åŠ å±æ€§
+//ÓÃÓÚ±£´æÒ»Ğ©Íâ¼ÓÊôĞÔ
     class AnyStorage : public std::unordered_map<std::string, Any> {
     public:
         AnyStorage() = default;
@@ -140,10 +140,10 @@ namespace toolkit {
         using Ptr = std::shared_ptr<AnyStorage>;
     };
 
-//å¯¹è±¡å®‰å…¨çš„æ„å»ºå’Œææ„
-//æ„å»ºåæ‰§è¡ŒonCreateå‡½æ•°
-//ææ„å‰æ‰§è¡ŒonDestoryå‡½æ•°
-//åœ¨å‡½æ•°onCreateå’ŒonDestoryä¸­å¯ä»¥æ‰§è¡Œæ„é€ æˆ–ææ„ä¸­ä¸èƒ½è°ƒç”¨çš„æ–¹æ³•ï¼Œæ¯”å¦‚è¯´shared_from_thisæˆ–è€…è™šå‡½æ•°
+//¶ÔÏó°²È«µÄ¹¹½¨ºÍÎö¹¹
+//¹¹½¨ºóÖ´ĞĞonCreateº¯Êı
+//Îö¹¹Ç°Ö´ĞĞonDestoryº¯Êı
+//ÔÚº¯ÊıonCreateºÍonDestoryÖĞ¿ÉÒÔÖ´ĞĞ¹¹Ôì»òÎö¹¹ÖĞ²»ÄÜµ÷ÓÃµÄ·½·¨£¬±ÈÈçËµshared_from_this»òÕßĞéº¯Êı
     class Creator {
     public:
         template<typename C, typename ...ArgsType>
@@ -203,31 +203,31 @@ namespace toolkit {
 
     std::vector<std::string> split(const std::string &s, const char *delim);
 
-//å»é™¤å‰åçš„ç©ºæ ¼ã€å›è½¦ç¬¦ã€åˆ¶è¡¨ç¬¦...
+//È¥³ıÇ°ºóµÄ¿Õ¸ñ¡¢»Ø³µ·û¡¢ÖÆ±í·û...
     std::string &trim(std::string &s, const std::string &chars = " \r\n\t");
 
     std::string trim(std::string &&s, const std::string &chars = " \r\n\t");
 
-// stringè½¬å°å†™
+// string×ªĞ¡Ğ´
     std::string &strToLower(std::string &str);
 
     std::string strToLower(std::string &&str);
 
-// stringè½¬å¤§å†™
+// string×ª´óĞ´
     std::string &strToUpper(std::string &str);
 
     std::string strToUpper(std::string &&str);
 
-//æ›¿æ¢å­å­—ç¬¦ä¸²
+//Ìæ»»×Ó×Ö·û´®
     void replace(std::string &str, const std::string &old_str, const std::string &new_str);
 
-//åˆ¤æ–­æ˜¯å¦ä¸ºip
+//ÅĞ¶ÏÊÇ·ñÎªip
     bool isIP(const char *str);
 
-//å­—ç¬¦ä¸²æ˜¯å¦ä»¥xxå¼€å¤´
+//×Ö·û´®ÊÇ·ñÒÔxx¿ªÍ·
     bool start_with(const std::string &str, const std::string &substr);
 
-//å­—ç¬¦ä¸²æ˜¯å¦ä»¥xxç»“å°¾
+//×Ö·û´®ÊÇ·ñÒÔxx½áÎ²
     bool end_with(const std::string &str, const std::string &substr);
 
 #ifndef bzero
@@ -271,45 +271,45 @@ namespace toolkit {
 #endif //WIN32
 
 /**
- * è·å–1970å¹´è‡³ä»Šçš„æ¯«ç§’æ•°
- * @param system_time æ˜¯å¦ä¸ºç³»ç»Ÿæ—¶é—´(ç³»ç»Ÿæ—¶é—´å¯ä»¥å›é€€),å¦åˆ™ä¸ºç¨‹åºå¯åŠ¨æ—¶é—´(ä¸å¯å›é€€)
+ * »ñÈ¡1970ÄêÖÁ½ñµÄºÁÃëÊı
+ * @param system_time ÊÇ·ñÎªÏµÍ³Ê±¼ä(ÏµÍ³Ê±¼ä¿ÉÒÔ»ØÍË),·ñÔòÎª³ÌĞòÆô¶¯Ê±¼ä(²»¿É»ØÍË)
  */
     uint64_t getCurrentMillisecond(bool system_time = false);
 
 /**
- * è·å–1970å¹´è‡³ä»Šçš„å¾®ç§’æ•°
- * @param system_time æ˜¯å¦ä¸ºç³»ç»Ÿæ—¶é—´(ç³»ç»Ÿæ—¶é—´å¯ä»¥å›é€€),å¦åˆ™ä¸ºç¨‹åºå¯åŠ¨æ—¶é—´(ä¸å¯å›é€€)
+ * »ñÈ¡1970ÄêÖÁ½ñµÄÎ¢ÃëÊı
+ * @param system_time ÊÇ·ñÎªÏµÍ³Ê±¼ä(ÏµÍ³Ê±¼ä¿ÉÒÔ»ØÍË),·ñÔòÎª³ÌĞòÆô¶¯Ê±¼ä(²»¿É»ØÍË)
  */
     uint64_t getCurrentMicrosecond(bool system_time = false);
 
 /**
- * è·å–æ—¶é—´å­—ç¬¦ä¸²
- * @param fmt æ—¶é—´æ ¼å¼ï¼Œè­¬å¦‚%Y-%m-%d %H:%M:%S
- * @return æ—¶é—´å­—ç¬¦ä¸²
+ * »ñÈ¡Ê±¼ä×Ö·û´®
+ * @param fmt Ê±¼ä¸ñÊ½£¬Æ©Èç%Y-%m-%d %H:%M:%S
+ * @return Ê±¼ä×Ö·û´®
  */
     std::string getTimeStr(const char *fmt, time_t time = 0);
 
 /**
- * æ ¹æ®unixæ—¶é—´æˆ³è·å–æœ¬åœ°æ—¶é—´
- * @param sec unixæ—¶é—´æˆ³
- * @return tmç»“æ„ä½“
+ * ¸ù¾İunixÊ±¼ä´Á»ñÈ¡±¾µØÊ±¼ä
+ * @param sec unixÊ±¼ä´Á
+ * @return tm½á¹¹Ìå
  */
     struct tm getLocalTime(time_t sec);
 
 /**
- * è®¾ç½®çº¿ç¨‹å
+ * ÉèÖÃÏß³ÌÃû
  */
     void setThreadName(const char *name);
 
 /**
- * è·å–çº¿ç¨‹å
+ * »ñÈ¡Ïß³ÌÃû
  */
     std::string getThreadName();
 
 /**
- * è®¾ç½®å½“å‰çº¿ç¨‹cpuäº²å’Œæ€§
- * @param i cpuç´¢å¼•ï¼Œå¦‚æœä¸º-1ï¼Œé‚£ä¹ˆå–æ¶ˆcpuäº²å’Œæ€§
- * @return æ˜¯å¦æˆåŠŸï¼Œç›®å‰åªæ”¯æŒlinux
+ * ÉèÖÃµ±Ç°Ïß³ÌcpuÇ×ºÍĞÔ
+ * @param i cpuË÷Òı£¬Èç¹ûÎª-1£¬ÄÇÃ´È¡ÏûcpuÇ×ºÍĞÔ
+ * @return ÊÇ·ñ³É¹¦£¬Ä¿Ç°Ö»Ö§³Ölinux
  */
     bool setThreadAffinity(int i);
 

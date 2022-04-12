@@ -1,4 +1,4 @@
-ï»¿/*
+/*
  * Copyright (c) 2016 The ZLToolKit project authors. All Rights Reserved.
  *
  * This file is part of ZLToolKit(https://github.com/ZLMediaKit/ZLToolKit).
@@ -49,16 +49,16 @@ namespace toolkit {
 #if defined(HAS_EPOLL)
         _epoll_fd = epoll_create(EPOLL_SIZE);
         if (_epoll_fd == -1) {
-            throw runtime_error(StrPrinter << "åˆ›å»ºepollæ–‡ä»¶æè¿°ç¬¦å¤±è´¥:" << get_uv_errmsg());
+            throw runtime_error(StrPrinter << "´´½¨epollÎÄ¼şÃèÊö·ûÊ§°Ü:" << get_uv_errmsg());
         }
         SockUtil::setCloExec(_epoll_fd);
 #endif //HAS_EPOLL
         _logger = Logger::Instance().shared_from_this();
         _loop_thread_id = this_thread::get_id();
 
-        //æ·»åŠ å†…éƒ¨ç®¡é“äº‹ä»¶
+        //Ìí¼ÓÄÚ²¿¹ÜµÀÊÂ¼ş
         if (addEvent(_pipe.readFD(), Event_Read, [this](int event) { onPipeEvent(); }) == -1) {
-            throw std::runtime_error("epollæ·»åŠ ç®¡é“å¤±è´¥");
+            throw std::runtime_error("epollÌí¼Ó¹ÜµÀÊ§°Ü");
         }
     }
 
@@ -68,7 +68,7 @@ namespace toolkit {
         }, false, true);
 
         if (_loop_thread) {
-            //é˜²æ­¢ä½œä¸ºå­è¿›ç¨‹æ—¶å´©æºƒ
+            //·ÀÖ¹×÷Îª×Ó½ø³ÌÊ±±ÀÀ£
             try { _loop_thread->join(); } catch (...) {}
             delete _loop_thread;
             _loop_thread = nullptr;
@@ -84,7 +84,7 @@ namespace toolkit {
             _epoll_fd = -1;
         }
 #endif //defined(HAS_EPOLL)
-        //é€€å‡ºå‰æ¸…ç†ç®¡é“ä¸­çš„æ•°æ®
+        //ÍË³öÇ°ÇåÀí¹ÜµÀÖĞµÄÊı¾İ
         _loop_thread_id = this_thread::get_id();
         onPipeEvent();
         InfoL << this;
@@ -93,7 +93,7 @@ namespace toolkit {
     int EventPoller::addEvent(int fd, int event, PollEventCB cb) {
         TimeTicker();
         if (!cb) {
-            WarnL << "PollEventCB ä¸ºç©º!";
+            WarnL << "PollEventCB Îª¿Õ!";
             return -1;
         }
 
@@ -109,9 +109,9 @@ namespace toolkit {
             return ret;
 #else
 #ifndef _WIN32
-            //win32å¹³å°ï¼Œsocketå¥—æ¥å­—ä¸ç­‰äºæ–‡ä»¶æè¿°ç¬¦ï¼Œæ‰€ä»¥å¯èƒ½ä¸é€‚ç”¨è¿™ä¸ªé™åˆ¶
+            //win32Æ½Ì¨£¬socketÌ×½Ó×Ö²»µÈÓÚÎÄ¼şÃèÊö·û£¬ËùÒÔ¿ÉÄÜ²»ÊÊÓÃÕâ¸öÏŞÖÆ
             if (fd >= FD_SETSIZE || _event_map.size() >= FD_SETSIZE) {
-                WarnL << "selectæœ€å¤šç›‘å¬" << FD_SETSIZE << "ä¸ªæ–‡ä»¶æè¿°ç¬¦";
+                WarnL << "select×î¶à¼àÌı" << FD_SETSIZE << "¸öÎÄ¼şÃèÊö·û";
                 return -1;
             }
 #endif
@@ -147,7 +147,7 @@ namespace toolkit {
 
         }
 
-        //è·¨çº¿ç¨‹æ“ä½œ
+        //¿çÏß³Ì²Ù×÷
         async([this, fd, cb]() {
             delEvent(fd, std::move(const_cast<PollDelCB &>(cb)));
         });
@@ -200,7 +200,7 @@ namespace toolkit {
                 _list_task.emplace_back(ret);
             }
         }
-        //å†™æ•°æ®åˆ°ç®¡é“,å”¤é†’ä¸»çº¿ç¨‹
+        //Ğ´Êı¾İµ½¹ÜµÀ,»½ĞÑÖ÷Ïß³Ì
         _pipe.write("", 1);
         return ret;
     }
@@ -231,7 +231,7 @@ namespace toolkit {
             } catch (ExitException &) {
                 _exit_flag = true;
             } catch (std::exception &ex) {
-                ErrorL << "EventPolleræ‰§è¡Œå¼‚æ­¥ä»»åŠ¡æ•è·åˆ°å¼‚å¸¸:" << ex.what();
+                ErrorL << "EventPollerÖ´ĞĞÒì²½ÈÎÎñ²¶»ñµ½Òì³£:" << ex.what();
             }
         });
     }
@@ -243,7 +243,7 @@ namespace toolkit {
     BufferRaw::Ptr EventPoller::getSharedBuffer() {
         auto ret = _shared_buffer.lock();
         if (!ret) {
-            //é¢„ç•™ä¸€ä¸ªå­—èŠ‚å­˜æ”¾\0ç»“å°¾ç¬¦
+            //Ô¤ÁôÒ»¸ö×Ö½Ú´æ·Å\0½áÎ²·û
             ret = BufferRaw::create();
             ret->setCapacity(1 + SOCKET_DEFAULT_BUF_SIZE);
             _shared_buffer = ret;
@@ -277,11 +277,11 @@ namespace toolkit {
             struct epoll_event events[EPOLL_SIZE];
             while (!_exit_flag) {
                 minDelay = getMinDelay();
-                startSleep();//ç”¨äºç»Ÿè®¡å½“å‰çº¿ç¨‹è´Ÿè½½æƒ…å†µ
+                startSleep();//ÓÃÓÚÍ³¼Æµ±Ç°Ïß³Ì¸ºÔØÇé¿ö
                 int ret = epoll_wait(_epoll_fd, events, EPOLL_SIZE, minDelay ? minDelay : -1);
-                sleepWakeUp();//ç”¨äºç»Ÿè®¡å½“å‰çº¿ç¨‹è´Ÿè½½æƒ…å†µ
+                sleepWakeUp();//ÓÃÓÚÍ³¼Æµ±Ç°Ïß³Ì¸ºÔØÇé¿ö
                 if (ret <= 0) {
-                    //è¶…æ—¶æˆ–è¢«æ‰“æ–­
+                    //³¬Ê±»ò±»´ò¶Ï
                     continue;
                 }
                 for (int i = 0; i < ret; ++i) {
@@ -296,7 +296,7 @@ namespace toolkit {
                     try {
                         (*cb)(toPoller(ev.events));
                     } catch (std::exception &ex) {
-                        ErrorL << "EventPolleræ‰§è¡Œäº‹ä»¶å›è°ƒæ•è·åˆ°å¼‚å¸¸:" << ex.what();
+                        ErrorL << "EventPollerÖ´ĞĞÊÂ¼ş»Øµ÷²¶»ñµ½Òì³£:" << ex.what();
                     }
                 }
             }
@@ -306,7 +306,7 @@ namespace toolkit {
             List<Poll_Record::Ptr> callback_list;
             struct timeval tv;
             while (!_exit_flag) {
-                //å®šæ—¶å™¨äº‹ä»¶ä¸­å¯èƒ½æ“ä½œ_event_map
+                //¶¨Ê±Æ÷ÊÂ¼şÖĞ¿ÉÄÜ²Ù×÷_event_map
                 minDelay = getMinDelay();
                 tv.tv_sec = (decltype(tv.tv_sec)) (minDelay / 1000);
                 tv.tv_usec = 1000 * (minDelay % 1000);
@@ -320,25 +320,25 @@ namespace toolkit {
                         max_fd = pr.first;
                     }
                     if (pr.second->event & Event_Read) {
-                        set_read.fdSet(pr.first);//ç›‘å¬ç®¡é“å¯è¯»äº‹ä»¶
+                        set_read.fdSet(pr.first);//¼àÌı¹ÜµÀ¿É¶ÁÊÂ¼ş
                     }
                     if (pr.second->event & Event_Write) {
-                        set_write.fdSet(pr.first);//ç›‘å¬ç®¡é“å¯å†™äº‹ä»¶
+                        set_write.fdSet(pr.first);//¼àÌı¹ÜµÀ¿ÉĞ´ÊÂ¼ş
                     }
                     if (pr.second->event & Event_Error) {
-                        set_err.fdSet(pr.first);//ç›‘å¬ç®¡é“é”™è¯¯äº‹ä»¶
+                        set_err.fdSet(pr.first);//¼àÌı¹ÜµÀ´íÎóÊÂ¼ş
                     }
                 }
 
-                startSleep();//ç”¨äºç»Ÿè®¡å½“å‰çº¿ç¨‹è´Ÿè½½æƒ…å†µ
+                startSleep();//ÓÃÓÚÍ³¼Æµ±Ç°Ïß³Ì¸ºÔØÇé¿ö
                 ret = zl_select(max_fd + 1, &set_read, &set_write, &set_err, minDelay ? &tv : nullptr);
-                sleepWakeUp();//ç”¨äºç»Ÿè®¡å½“å‰çº¿ç¨‹è´Ÿè½½æƒ…å†µ
+                sleepWakeUp();//ÓÃÓÚÍ³¼Æµ±Ç°Ïß³Ì¸ºÔØÇé¿ö
 
                 if (ret <= 0) {
-                    //è¶…æ—¶æˆ–è¢«æ‰“æ–­
+                    //³¬Ê±»ò±»´ò¶Ï
                     continue;
                 }
-                //æ”¶é›†selectäº‹ä»¶ç±»å‹
+                //ÊÕ¼¯selectÊÂ¼şÀàĞÍ
                 for (auto &pr: _event_map) {
                     int event = 0;
                     if (set_read.isSet(pr.first)) {
@@ -360,7 +360,7 @@ namespace toolkit {
                     try {
                         record->call_back(record->attach);
                     } catch (std::exception &ex) {
-                        ErrorL << "EventPolleræ‰§è¡Œäº‹ä»¶å›è°ƒæ•è·åˆ°å¼‚å¸¸:" << ex.what();
+                        ErrorL << "EventPollerÖ´ĞĞÊÂ¼ş»Øµ÷²¶»ñµ½Òì³£:" << ex.what();
                     }
                 });
                 callback_list.clear();
@@ -377,15 +377,15 @@ namespace toolkit {
         task_copy.swap(_delay_task_map);
 
         for (auto it = task_copy.begin(); it != task_copy.end() && it->first <= now_time; it = task_copy.erase(it)) {
-            //å·²åˆ°æœŸçš„ä»»åŠ¡
+            //ÒÑµ½ÆÚµÄÈÎÎñ
             try {
                 auto next_delay = (*(it->second))();
                 if (next_delay) {
-                    //å¯é‡å¤ä»»åŠ¡,æ›´æ–°æ—¶é—´æˆªæ­¢çº¿
+                    //¿ÉÖØ¸´ÈÎÎñ,¸üĞÂÊ±¼ä½ØÖ¹Ïß
                     _delay_task_map.emplace(next_delay + now_time, std::move(it->second));
                 }
             } catch (std::exception &ex) {
-                ErrorL << "EventPolleræ‰§è¡Œå»¶æ—¶ä»»åŠ¡æ•è·åˆ°å¼‚å¸¸:" << ex.what();
+                ErrorL << "EventPollerÖ´ĞĞÑÓÊ±ÈÎÎñ²¶»ñµ½Òì³£:" << ex.what();
             }
         }
 
@@ -394,25 +394,25 @@ namespace toolkit {
 
         auto it = _delay_task_map.begin();
         if (it == _delay_task_map.end()) {
-            //æ²¡æœ‰å‰©ä½™çš„å®šæ—¶å™¨äº†
+            //Ã»ÓĞÊ£ÓàµÄ¶¨Ê±Æ÷ÁË
             return 0;
         }
-        //æœ€è¿‘ä¸€ä¸ªå®šæ—¶å™¨çš„æ‰§è¡Œå»¶æ—¶
+        //×î½üÒ»¸ö¶¨Ê±Æ÷µÄÖ´ĞĞÑÓÊ±
         return it->first - now_time;
     }
 
     uint64_t EventPoller::getMinDelay() {
         auto it = _delay_task_map.begin();
         if (it == _delay_task_map.end()) {
-            //æ²¡æœ‰å‰©ä½™çš„å®šæ—¶å™¨äº†
+            //Ã»ÓĞÊ£ÓàµÄ¶¨Ê±Æ÷ÁË
             return 0;
         }
         auto now = getCurrentMillisecond();
         if (it->first > now) {
-            //æ‰€æœ‰ä»»åŠ¡å°šæœªåˆ°æœŸ
+            //ËùÓĞÈÎÎñÉĞÎ´µ½ÆÚ
             return it->first - now;
         }
-        //æ‰§è¡Œå·²åˆ°æœŸçš„ä»»åŠ¡å¹¶åˆ·æ–°ä¼‘çœ å»¶æ—¶
+        //Ö´ĞĞÒÑµ½ÆÚµÄÈÎÎñ²¢Ë¢ĞÂĞİÃßÑÓÊ±
         return flushDelayTask(now);
     }
 
@@ -420,7 +420,7 @@ namespace toolkit {
         DelayTask::Ptr ret = std::make_shared<DelayTask>(std::move(task));
         auto time_line = getCurrentMillisecond() + delay_ms;
         async_first([time_line, ret, this]() {
-            //å¼‚æ­¥æ‰§è¡Œçš„ç›®çš„æ˜¯åˆ·æ–°selectæˆ–epollçš„ä¼‘çœ æ—¶é—´
+            //Òì²½Ö´ĞĞµÄÄ¿µÄÊÇË¢ĞÂselect»òepollµÄĞİÃßÊ±¼ä
             _delay_task_map.emplace(time_line, ret);
         });
         return ret;

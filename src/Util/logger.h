@@ -1,4 +1,4 @@
-ï»¿/*
+/*
  * Copyright (c) 2016 The ZLToolKit project authors. All Rights Reserved.
  *
  * This file is part of ZLToolKit(https://github.com/ZLMediaKit/ZLToolKit).
@@ -42,7 +42,7 @@ namespace toolkit {
     void setLogger(Logger *logger);
 
 /**
-* æ—¥å¿—ç±»
+* ÈÕÖ¾Àà
 */
     class Logger : public std::enable_shared_from_this<Logger>, public noncopyable {
     public:
@@ -51,7 +51,7 @@ namespace toolkit {
         using Ptr = std::shared_ptr<Logger>;
 
         /**
-         * è·å–æ—¥å¿—å•ä¾‹
+         * »ñÈ¡ÈÕÖ¾µ¥Àı
          * @return
          */
         static Logger &Instance();
@@ -61,52 +61,52 @@ namespace toolkit {
         ~Logger();
 
         /**
-         * æ·»åŠ æ—¥å¿—é€šé“ï¼Œéçº¿ç¨‹å®‰å…¨çš„
-         * @param channel logé€šé“
+         * Ìí¼ÓÈÕÖ¾Í¨µÀ£¬·ÇÏß³Ì°²È«µÄ
+         * @param channel logÍ¨µÀ
          */
         void add(const std::shared_ptr<LogChannel> &channel);
 
         /**
-         * åˆ é™¤æ—¥å¿—é€šé“ï¼Œéçº¿ç¨‹å®‰å…¨çš„
-         * @param name logé€šé“å
+         * É¾³ıÈÕÖ¾Í¨µÀ£¬·ÇÏß³Ì°²È«µÄ
+         * @param name logÍ¨µÀÃû
          */
         void del(const std::string &name);
 
         /**
-         * è·å–æ—¥å¿—é€šé“ï¼Œéçº¿ç¨‹å®‰å…¨çš„
-         * @param name logé€šé“å
-         * @return çº¿ç¨‹é€šé“
+         * »ñÈ¡ÈÕÖ¾Í¨µÀ£¬·ÇÏß³Ì°²È«µÄ
+         * @param name logÍ¨µÀÃû
+         * @return Ïß³ÌÍ¨µÀ
          */
         std::shared_ptr<LogChannel> get(const std::string &name);
 
         /**
-         * è®¾ç½®å†™logå™¨ï¼Œéçº¿ç¨‹å®‰å…¨çš„
-         * @param writer å†™logå™¨
+         * ÉèÖÃĞ´logÆ÷£¬·ÇÏß³Ì°²È«µÄ
+         * @param writer Ğ´logÆ÷
          */
         void setWriter(const std::shared_ptr<LogWriter> &writer);
 
         /**
-         * è®¾ç½®æ‰€æœ‰æ—¥å¿—é€šé“çš„logç­‰çº§
-         * @param level logç­‰çº§
+         * ÉèÖÃËùÓĞÈÕÖ¾Í¨µÀµÄlogµÈ¼¶
+         * @param level logµÈ¼¶
          */
         void setLevel(LogLevel level);
 
         /**
-         * è·å–loggerå
-         * @return loggerå
+         * »ñÈ¡loggerÃû
+         * @return loggerÃû
          */
         const std::string &getName() const;
 
         /**
-         * å†™æ—¥å¿—
-         * @param ctx æ—¥å¿—ä¿¡æ¯
+         * Ğ´ÈÕÖ¾
+         * @param ctx ÈÕÖ¾ĞÅÏ¢
          */
         void write(const LogContextPtr &ctx);
 
     private:
         /**
-         * å†™æ—¥å¿—åˆ°å„channelï¼Œä»…ä¾›AsyncLogWriterè°ƒç”¨
-         * @param ctx æ—¥å¿—ä¿¡æ¯
+         * Ğ´ÈÕÖ¾µ½¸÷channel£¬½ö¹©AsyncLogWriterµ÷ÓÃ
+         * @param ctx ÈÕÖ¾ĞÅÏ¢
          */
         void writeChannels(const LogContextPtr &ctx);
 
@@ -121,12 +121,12 @@ namespace toolkit {
 
 ///////////////////LogContext///////////////////
 /**
-* æ—¥å¿—ä¸Šä¸‹æ–‡
+* ÈÕÖ¾ÉÏÏÂÎÄ
 */
     class LogContext : public std::ostringstream {
     public:
-        //_file,_functionæ”¹æˆstringä¿å­˜ï¼Œç›®çš„æ˜¯æœ‰äº›æƒ…å†µä¸‹ï¼ŒæŒ‡é’ˆå¯èƒ½ä¼šå¤±æ•ˆ
-        //æ¯”å¦‚è¯´åŠ¨æ€åº“ä¸­æ‰“å°äº†ä¸€æ¡æ—¥å¿—ï¼Œç„¶ååŠ¨æ€åº“å¸è½½äº†ï¼Œé‚£ä¹ˆæŒ‡å‘é™æ€æ•°æ®åŒºçš„æŒ‡é’ˆå°±ä¼šå¤±æ•ˆ
+        //_file,_function¸Ä³Éstring±£´æ£¬Ä¿µÄÊÇÓĞĞ©Çé¿öÏÂ£¬Ö¸Õë¿ÉÄÜ»áÊ§Ğ§
+        //±ÈÈçËµ¶¯Ì¬¿âÖĞ´òÓ¡ÁËÒ»ÌõÈÕÖ¾£¬È»ºó¶¯Ì¬¿âĞ¶ÔØÁË£¬ÄÇÃ´Ö¸Ïò¾²Ì¬Êı¾İÇøµÄÖ¸Õë¾Í»áÊ§Ğ§
         LogContext() = default;
 
         LogContext(LogLevel level, const char *file, const char *function, int line, const char *module_name);
@@ -150,7 +150,7 @@ namespace toolkit {
     };
 
 /**
- * æ—¥å¿—ä¸Šä¸‹æ–‡æ•è·å™¨
+ * ÈÕÖ¾ÉÏÏÂÎÄ²¶»ñÆ÷
  */
     class LogContextCapture {
     public:
@@ -163,9 +163,9 @@ namespace toolkit {
         ~LogContextCapture();
 
         /**
-         * è¾“å…¥std::endl(å›è½¦ç¬¦)ç«‹å³è¾“å‡ºæ—¥å¿—
-         * @param f std::endl(å›è½¦ç¬¦)
-         * @return è‡ªèº«å¼•ç”¨
+         * ÊäÈëstd::endl(»Ø³µ·û)Á¢¼´Êä³öÈÕÖ¾
+         * @param f std::endl(»Ø³µ·û)
+         * @return ×ÔÉíÒıÓÃ
          */
         LogContextCapture &operator<<(std::ostream &(*f)(std::ostream &));
 
@@ -188,7 +188,7 @@ namespace toolkit {
 
 ///////////////////LogWriter///////////////////
 /**
- * å†™æ—¥å¿—å™¨
+ * Ğ´ÈÕÖ¾Æ÷
  */
     class LogWriter : public noncopyable {
     public:
@@ -222,7 +222,7 @@ namespace toolkit {
 
 ///////////////////LogChannel///////////////////
 /**
- * æ—¥å¿—é€šé“
+ * ÈÕÖ¾Í¨µÀ
  */
     class LogChannel : public noncopyable {
     public:
@@ -240,10 +240,10 @@ namespace toolkit {
 
     protected:
         /**
-        * æ‰“å°æ—¥å¿—è‡³è¾“å‡ºæµ
-        * @param ost è¾“å‡ºæµ
-        * @param enable_color æ˜¯å¦å¯ç”¨é¢œè‰²
-        * @param enable_detail æ˜¯å¦æ‰“å°ç»†èŠ‚(å‡½æ•°åã€æºç æ–‡ä»¶åã€æºç è¡Œ)
+        * ´òÓ¡ÈÕÖ¾ÖÁÊä³öÁ÷
+        * @param ost Êä³öÁ÷
+        * @param enable_color ÊÇ·ñÆôÓÃÑÕÉ«
+        * @param enable_detail ÊÇ·ñ´òÓ¡Ï¸½Ú(º¯ÊıÃû¡¢Ô´ÂëÎÄ¼şÃû¡¢Ô´ÂëĞĞ)
         */
         virtual void format(const Logger &logger, std::ostream &ost, const LogContextPtr &ctx, bool enable_color = true,
                             bool enable_detail = true);
@@ -254,13 +254,13 @@ namespace toolkit {
     };
 
 /**
- * è¾“å‡ºæ—¥è‡³åˆ°å¹¿æ’­
+ * Êä³öÈÕÖÁµ½¹ã²¥
  */
     class EventChannel : public LogChannel {
     public:
-        //è¾“å‡ºæ—¥å¿—æ—¶çš„å¹¿æ’­å
+        //Êä³öÈÕÖ¾Ê±µÄ¹ã²¥Ãû
         static const std::string kBroadcastLogEvent;
-        //æ—¥å¿—å¹¿æ’­å‚æ•°ç±»å‹å’Œåˆ—è¡¨
+        //ÈÕÖ¾¹ã²¥²ÎÊıÀàĞÍºÍÁĞ±í
 #define BroadcastLogEventArgs const Logger &logger, const LogContextPtr &ctx
 
         EventChannel(const std::string &name = "EventChannel", LogLevel level = LTrace);
@@ -271,7 +271,7 @@ namespace toolkit {
     };
 
 /**
- * è¾“å‡ºæ—¥å¿—è‡³ç»ˆç«¯ï¼Œæ”¯æŒè¾“å‡ºæ—¥å¿—è‡³android logcat
+ * Êä³öÈÕÖ¾ÖÁÖÕ¶Ë£¬Ö§³ÖÊä³öÈÕÖ¾ÖÁandroid logcat
  */
     class ConsoleChannel : public LogChannel {
     public:
@@ -283,7 +283,7 @@ namespace toolkit {
     };
 
 /**
- * è¾“å‡ºæ—¥å¿—è‡³æ–‡ä»¶
+ * Êä³öÈÕÖ¾ÖÁÎÄ¼ş
  */
     class FileChannelBase : public LogChannel {
     public:
@@ -313,8 +313,8 @@ namespace toolkit {
     class Ticker;
 
 /**
- * è‡ªåŠ¨æ¸…ç†çš„æ—¥å¿—æ–‡ä»¶é€šé“
- * é»˜è®¤æœ€å¤šä¿å­˜30å¤©çš„æ—¥å¿—
+ * ×Ô¶¯ÇåÀíµÄÈÕÖ¾ÎÄ¼şÍ¨µÀ
+ * Ä¬ÈÏ×î¶à±£´æ30ÌìµÄÈÕÖ¾
  */
     class FileChannel : public FileChannelBase {
     public:
@@ -324,55 +324,55 @@ namespace toolkit {
         ~FileChannel() override = default;
 
         /**
-         * å†™æ—¥å¿—æ—¶æ‰ä¼šè§¦å‘æ–°å»ºæ—¥å¿—æ–‡ä»¶æˆ–è€…åˆ é™¤è€çš„æ—¥å¿—æ–‡ä»¶
+         * Ğ´ÈÕÖ¾Ê±²Å»á´¥·¢ĞÂ½¨ÈÕÖ¾ÎÄ¼ş»òÕßÉ¾³ıÀÏµÄÈÕÖ¾ÎÄ¼ş
          * @param logger
          * @param stream
          */
         void write(const Logger &logger, const LogContextPtr &ctx) override;
 
         /**
-         * è®¾ç½®æ—¥å¿—æœ€å¤§ä¿å­˜å¤©æ•°
-         * @param max_day å¤©æ•°
+         * ÉèÖÃÈÕÖ¾×î´ó±£´æÌìÊı
+         * @param max_day ÌìÊı
          */
         void setMaxDay(size_t max_day);
 
         /**
-         * è®¾ç½®æ—¥å¿—åˆ‡ç‰‡æ–‡ä»¶æœ€å¤§å¤§å°
-         * @param max_size å•ä½MB
+         * ÉèÖÃÈÕÖ¾ÇĞÆ¬ÎÄ¼ş×î´ó´óĞ¡
+         * @param max_size µ¥Î»MB
          */
         void setFileMaxSize(size_t max_size);
 
         /**
-         * è®¾ç½®æ—¥å¿—åˆ‡ç‰‡æ–‡ä»¶æœ€å¤§ä¸ªæ•°
-         * @param max_count ä¸ªæ•°
+         * ÉèÖÃÈÕÖ¾ÇĞÆ¬ÎÄ¼ş×î´ó¸öÊı
+         * @param max_count ¸öÊı
          */
         void setFileMaxCount(size_t max_count);
 
     private:
         /**
-         * åˆ é™¤æ—¥å¿—åˆ‡ç‰‡æ–‡ä»¶ï¼Œæ¡ä»¶ä¸ºè¶…è¿‡æœ€å¤§ä¿å­˜å¤©æ•°ä¸æœ€å¤§åˆ‡ç‰‡ä¸ªæ•°
+         * É¾³ıÈÕÖ¾ÇĞÆ¬ÎÄ¼ş£¬Ìõ¼şÎª³¬¹ı×î´ó±£´æÌìÊıÓë×î´óÇĞÆ¬¸öÊı
          */
         void clean();
 
         /**
-         * æ£€æŸ¥å½“å‰æ—¥å¿—åˆ‡ç‰‡æ–‡ä»¶å¤§å°ï¼Œå¦‚æœè¶…è¿‡é™åˆ¶ï¼Œåˆ™åˆ›å»ºæ–°çš„æ—¥å¿—åˆ‡ç‰‡æ–‡ä»¶
+         * ¼ì²éµ±Ç°ÈÕÖ¾ÇĞÆ¬ÎÄ¼ş´óĞ¡£¬Èç¹û³¬¹ıÏŞÖÆ£¬Ôò´´½¨ĞÂµÄÈÕÖ¾ÇĞÆ¬ÎÄ¼ş
          */
         void checkSize(time_t second);
 
         /**
-         * åˆ›å»ºå¹¶åˆ‡æ¢åˆ°ä¸‹ä¸€ä¸ªæ—¥å¿—åˆ‡ç‰‡æ–‡ä»¶
+         * ´´½¨²¢ÇĞ»»µ½ÏÂÒ»¸öÈÕÖ¾ÇĞÆ¬ÎÄ¼ş
          */
         void changeFile(time_t second);
 
     private:
         bool _can_write = false;
-        //é»˜è®¤æœ€å¤šä¿å­˜30å¤©çš„æ—¥å¿—æ–‡ä»¶
+        //Ä¬ÈÏ×î¶à±£´æ30ÌìµÄÈÕÖ¾ÎÄ¼ş
         size_t _log_max_day = 30;
-        //æ¯ä¸ªæ—¥å¿—åˆ‡ç‰‡æ–‡ä»¶æœ€å¤§é»˜è®¤128MB
+        //Ã¿¸öÈÕÖ¾ÇĞÆ¬ÎÄ¼ş×î´óÄ¬ÈÏ128MB
         size_t _log_max_size = 128;
-        //æœ€å¤šé»˜è®¤ä¿æŒ30ä¸ªæ—¥å¿—åˆ‡ç‰‡æ–‡ä»¶
+        //×î¶àÄ¬ÈÏ±£³Ö30¸öÈÕÖ¾ÇĞÆ¬ÎÄ¼ş
         size_t _log_max_count = 30;
-        //å½“å‰æ—¥å¿—åˆ‡ç‰‡æ–‡ä»¶ç´¢å¼•
+        //µ±Ç°ÈÕÖ¾ÇĞÆ¬ÎÄ¼şË÷Òı
         size_t _index = 0;
         int64_t _last_day = -1;
         time_t _last_check_time = 0;
@@ -416,7 +416,7 @@ namespace toolkit {
         template<typename Log>
         static inline void appendLog(Log &out) {}
 
-        //printfæ ·å¼çš„æ—¥å¿—æ‰“å°
+        //printfÑùÊ½µÄÈÕÖ¾´òÓ¡
         static void
         printLog(Logger &logger, int level, const char *file, const char *function, int line, const char *fmt, ...);
 
@@ -425,10 +425,10 @@ namespace toolkit {
                   va_list ap);
     };
 
-//å¯é‡ç½®é»˜è®¤å€¼
+//¿ÉÖØÖÃÄ¬ÈÏÖµ
     extern Logger *g_defaultLogger;
 
-//ç”¨æ³•: DebugL << 1 << "+" << 2 << '=' << 3;
+//ÓÃ·¨: DebugL << 1 << "+" << 2 << '=' << 3;
 #define WriteL(level) ::toolkit::LogContextCapture(::toolkit::getLogger(), level, __FILE__, __FUNCTION__, __LINE__)
 #define TraceL WriteL(::toolkit::LTrace)
 #define DebugL WriteL(::toolkit::LDebug)
@@ -436,7 +436,7 @@ namespace toolkit {
 #define WarnL WriteL(::toolkit::LWarn)
 #define ErrorL WriteL(::toolkit::LError)
 
-//ç”¨æ³•: LogD("%d + %s = %c", 1 "2", 'c');
+//ÓÃ·¨: LogD("%d + %s = %c", 1 "2", 'c');
 #define PrintLog(level, ...) ::toolkit::LoggerWrapper::printLog(::toolkit::getLogger(), level, __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #define PrintT(...) PrintLog(::toolkit::LTrace, ##__VA_ARGS__)
 #define PrintD(...) PrintLog(::toolkit::LDebug, ##__VA_ARGS__)
@@ -444,8 +444,8 @@ namespace toolkit {
 #define PrintW(...) PrintLog(::toolkit::LWarn, ##__VA_ARGS__)
 #define PrintE(...) PrintLog(::toolkit::LError, ##__VA_ARGS__)
 
-//ç”¨æ³•: LogD(1, "+", "2", '=', 3);
-//ç”¨äºæ¨¡æ¿å®ä¾‹åŒ–çš„åŸå› ï¼Œå¦‚æœæ¯æ¬¡æ‰“å°å‚æ•°ä¸ªæ•°å’Œç±»å‹ä¸ä¸€è‡´ï¼Œå¯èƒ½ä¼šå¯¼è‡´äºŒè¿›åˆ¶ä»£ç è†¨èƒ€
+//ÓÃ·¨: LogD(1, "+", "2", '=', 3);
+//ÓÃÓÚÄ£°åÊµÀı»¯µÄÔ­Òò£¬Èç¹ûÃ¿´Î´òÓ¡²ÎÊı¸öÊıºÍÀàĞÍ²»Ò»ÖÂ£¬¿ÉÄÜ»áµ¼ÖÂ¶ş½øÖÆ´úÂëÅòÕÍ
 #define LogL(level, ...) ::toolkit::LoggerWrapper::printLogArray(::toolkit::getLogger(), (LogLevel)level, __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #define LogT(...) LogL(::toolkit::LTrace, ##__VA_ARGS__)
 #define LogD(...) LogL(::toolkit::LDebug, ##__VA_ARGS__)
