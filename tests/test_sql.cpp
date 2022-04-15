@@ -48,9 +48,7 @@ int main() {
 
     vector<vector<string> > sqlRet;
     SqlWriter("create database test_db;", false) << sqlRet;
-    SqlWriter(
-            "create table test_db.test_table(user_name  varchar(128),user_id int auto_increment primary key,user_pwd varchar(128));",
-            false) << sqlRet;
+    SqlWriter("create table test_db.test_table(user_name  varchar(128),user_id int auto_increment primary key,user_pwd varchar(128));",false) << sqlRet;
 
     //Í¬²½²åÈë
     SqlWriter insertSql("insert into test_db.test_table(user_name,user_pwd) values('?','?');");

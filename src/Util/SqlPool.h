@@ -30,7 +30,7 @@ namespace toolkit {
         using PoolType = ResourcePool<SqlConnection>;
         using SqlRetType = std::vector<std::vector<std::string> >;
 
-        static SqlPool &Instance();
+        static SqlPool & Instance();
 
         ~SqlPool() {
             _timer.reset();

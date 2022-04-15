@@ -68,9 +68,7 @@ namespace toolkit {
          * @param password 用户密码
          * @param character 字符集
          */
-        SqlConnection(const std::string &url, unsigned short port,
-                      const std::string &dbname, const std::string &username,
-                      const std::string &password, const std::string &character = "utf8mb4") {
+        SqlConnection(const std::string &url, unsigned short port,const std::string &dbname, const std::string &username,const std::string &password, const std::string &character = "utf8mb4") {
             mysql_init(&_sql);
             unsigned int timeout = 3;
             mysql_options(&_sql, MYSQL_OPT_CONNECT_TIMEOUT, &timeout);
