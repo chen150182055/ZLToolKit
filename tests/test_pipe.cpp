@@ -19,42 +19,42 @@ using namespace std;
 using namespace toolkit;
 
 int main() {
-    //ÉèÖÃÈÕÖ¾
+    //è®¾ç½®æ—¥å¿—
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
 #if defined(_WIN32)
-    ErrorL << "¸Ã²âÊÔ³ÌĞò²»ÄÜÔÙwindowsÏÂÔËĞĞ£¬ÒòÎªÎÒ²»»áwindowsÏÂµÄ¶à½ø³Ì±à³Ì£¬µ«ÊÇ¹ÜµÀÄ£¿éÊÇ¿ÉÒÔÔÚwindowsÏÂÕı³£¹¤×÷µÄ¡£" << endl;
+    ErrorL << "è¯¥æµ‹è¯•ç¨‹åºä¸èƒ½å†windowsä¸‹è¿è¡Œï¼Œå› ä¸ºæˆ‘ä¸ä¼šwindowsä¸‹çš„å¤šè¿›ç¨‹ç¼–ç¨‹ï¼Œä½†æ˜¯ç®¡é“æ¨¡å—æ˜¯å¯ä»¥åœ¨windowsä¸‹æ­£å¸¸å·¥ä½œçš„ã€‚" << endl;
 #else
-    //»ñÈ¡¸¸½ø³ÌµÄPID
+    //è·å–çˆ¶è¿›ç¨‹çš„PID
     auto parentPid = getpid();
     InfoL << "parent pid:" << parentPid << endl;
 
-    //¶¨ÒåÒ»¸ö¹ÜµÀ£¬lambadaÀàĞÍµÄ²ÎÊıÊÇ¹ÜµÀÊÕµ½Êı¾İµÄ»Øµ÷
+    //å®šä¹‰ä¸€ä¸ªç®¡é“ï¼Œlambadaç±»å‹çš„å‚æ•°æ˜¯ç®¡é“æ”¶åˆ°æ•°æ®çš„å›è°ƒ
     Pipe pipe([](int size,const char *buf) {
-        //¸Ã¹ÜµÀÓĞÊı¾İ¿É¶ÁÁË
+        //è¯¥ç®¡é“æœ‰æ•°æ®å¯è¯»äº†
         InfoL << getpid() << " recv:" << buf;
     });
 
-    //´´½¨×Ó½ø³Ì
+    //åˆ›å»ºå­è¿›ç¨‹
     auto pid = fork();
 
     if (pid == 0) {
-        //×Ó½ø³Ì
+        //å­è¿›ç¨‹
         int i = 10;
         while (i--) {
-            //ÔÚ×Ó½ø³ÌÃ¿¸ôÒ»Ãë°ÑÊı¾İĞ´Èë¹ÜµÀ£¬¹²¼Æ·¢ËÍ10´Î
+            //åœ¨å­è¿›ç¨‹æ¯éš”ä¸€ç§’æŠŠæ•°æ®å†™å…¥ç®¡é“ï¼Œå…±è®¡å‘é€10æ¬¡
             sleep(1);
             string msg = StrPrinter << "message " << i << " form subprocess:" << getpid();
-            DebugL << "×Ó½ø³Ì·¢ËÍ:" << msg << endl;
+            DebugL << "å­è¿›ç¨‹å‘é€:" << msg << endl;
             pipe.send(msg.data(), msg.size());
         }
-        DebugL << "×Ó½ø³ÌÍË³ö" << endl;
+        DebugL << "å­è¿›ç¨‹é€€å‡º" << endl;
     } else {
-        //¸¸½ø³ÌÉèÖÃÍË³öĞÅºÅ´¦Àíº¯Êı
+        //çˆ¶è¿›ç¨‹è®¾ç½®é€€å‡ºä¿¡å·å¤„ç†å‡½æ•°
         static semaphore sem;
-        signal(SIGINT, [](int) { sem.post(); });// ÉèÖÃÍË³öĞÅºÅ
+        signal(SIGINT, [](int) { sem.post(); });// è®¾ç½®é€€å‡ºä¿¡å·
         sem.wait();
 
-        InfoL << "¸¸½ø³ÌÍË³ö" << endl;
+        InfoL << "çˆ¶è¿›ç¨‹é€€å‡º" << endl;
     }
 #endif // defined(_WIN32)
 

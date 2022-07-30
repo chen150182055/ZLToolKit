@@ -17,45 +17,45 @@ using namespace std;
 using namespace toolkit;
 
 int main(int argc, char *argv[]) {
-    //³õÊ¼»¯ÉèÖÃÈÕÖ¾
+    //åˆå§‹åŒ–è®¾ç½®æ—¥å¿—
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
     Logger::Instance().setWriter(std::make_shared<AsyncLogWriter>());
 
-    //¼ÓÔØÖ¤Êé£¬Ö¤Êé°üº¬¹«Ô¿ºÍË½Ô¿
+    //åŠ è½½è¯ä¹¦ï¼Œè¯ä¹¦åŒ…å«å…¬é’¥å’Œç§é’¥
     SSL_Initor::Instance().loadCertificate((exeDir() + "ssl.p12").data());
     SSL_Initor::Instance().trustCertificate((exeDir() + "ssl.p12").data());
     SSL_Initor::Instance().ignoreInvalidCertificate(false);
 
-    //¶¨Òå¿Í»§¶ËºÍ·şÎñ¶Ë
+    //å®šä¹‰å®¢æˆ·ç«¯å’ŒæœåŠ¡ç«¯
     SSL_Box client(false), server(true);
 
-    //ÉèÖÃ¿Í»§¶Ë½âÃÜÊä³ö»Øµ÷
+    //è®¾ç½®å®¢æˆ·ç«¯è§£å¯†è¾“å‡ºå›è°ƒ
     client.setOnDecData([&](const Buffer::Ptr &buffer) {
-        //´òÓ¡À´×Ô·şÎñ¶ËÊı¾İ½âÃÜºóµÄÃ÷ÎÄ
+        //æ‰“å°æ¥è‡ªæœåŠ¡ç«¯æ•°æ®è§£å¯†åçš„æ˜æ–‡
         InfoL << "client recv:" << buffer->toString();
     });
 
-    //ÉèÖÃ¿Í»§¶Ë¼ÓÃÜÊä³ö»Øµ÷
+    //è®¾ç½®å®¢æˆ·ç«¯åŠ å¯†è¾“å‡ºå›è°ƒ
     client.setOnEncData([&](const Buffer::Ptr &buffer) {
-        //°Ñ¿Í»§¶Ë¼ÓÃÜºóµÄÃÜÎÄ·¢ËÍ¸ø·şÎñ¶Ë
+        //æŠŠå®¢æˆ·ç«¯åŠ å¯†åçš„å¯†æ–‡å‘é€ç»™æœåŠ¡ç«¯
         server.onRecv(buffer);
     });
 
-    //ÉèÖÃ·şÎñ¶Ë½âÃÜÊä³ö»Øµ÷
+    //è®¾ç½®æœåŠ¡ç«¯è§£å¯†è¾“å‡ºå›è°ƒ
     server.setOnDecData([&](const Buffer::Ptr &buffer) {
-        //´òÓ¡À´×Ô¿Í»§¶ËÊı¾İ½âÃÜºóµÄÃ÷ÎÄ
+        //æ‰“å°æ¥è‡ªå®¢æˆ·ç«¯æ•°æ®è§£å¯†åçš„æ˜æ–‡
         InfoL << "server recv:" << buffer->toString();
-        //°ÑÊı¾İ»ØÏÔ¸ø¿Í»§¶Ë
+        //æŠŠæ•°æ®å›æ˜¾ç»™å®¢æˆ·ç«¯
         server.onSend(buffer);
     });
 
-    //ÉèÖÃ·şÎñ¶Ë¼ÓÃÜÊä³ö»Øµ÷
+    //è®¾ç½®æœåŠ¡ç«¯åŠ å¯†è¾“å‡ºå›è°ƒ
     server.setOnEncData([&](const Buffer::Ptr &buffer) {
-        //°Ñ¼ÓÃÜµÄ»ØÏÔĞÅÏ¢»Ø¸´¸ø¿Í»§¶Ë;
+        //æŠŠåŠ å¯†çš„å›æ˜¾ä¿¡æ¯å›å¤ç»™å®¢æˆ·ç«¯;
         client.onRecv(buffer);
     });
 
-    InfoL << "ÇëÊäÈë×Ö·û¿ªÊ¼²âÊÔ,ÊäÈëquitÍ£Ö¹²âÊÔ:" << endl;
+    InfoL << "è¯·è¾“å…¥å­—ç¬¦å¼€å§‹æµ‹è¯•,è¾“å…¥quitåœæ­¢æµ‹è¯•:" << endl;
 
     string input;
     while (true) {
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
         if (input == "quit") {
             break;
         }
-        //°ÑÃ÷ÎÄÊı¾İÊäÈë¸ø¿Í»§¶Ë
+        //æŠŠæ˜æ–‡æ•°æ®è¾“å…¥ç»™å®¢æˆ·ç«¯
         client.onSend(std::make_shared<BufferString>(std::move(input)));
     }
     return 0;

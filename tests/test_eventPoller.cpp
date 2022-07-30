@@ -19,13 +19,13 @@ using namespace std;
 using namespace toolkit;
 
 /**
- * cpu¸ºÔØ¾ùºâ²âÊÔ
+ * cpuè´Ÿè½½å‡è¡¡æµ‹è¯•
  * @return
  */
 int main() {
     static bool exit_flag = false;
     signal(SIGINT, [](int) { exit_flag = true; });
-    //ÉèÖÃÈÕÖ¾
+    //è®¾ç½®æ—¥å¿—
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
 
     Ticker ticker;
@@ -37,14 +37,14 @@ int main() {
             for (auto load: vec) {
                 printer << load << "-";
             }
-            DebugL << "CPU¸ºÔØ:" << printer;
+            DebugL << "CPUè´Ÿè½½:" << printer;
 
             EventPollerPool::Instance().getExecutorDelay([](const vector<int> &vec) {
                 _StrPrinter printer;
                 for (auto delay: vec) {
                     printer << delay << "-";
                 }
-                DebugL << "cpuÈÎÎñÖ´ĞĞÑÓ³Ù:" << printer;
+                DebugL << "cpuä»»åŠ¡æ‰§è¡Œå»¶è¿Ÿ:" << printer;
             });
             ticker.resetTime();
         }

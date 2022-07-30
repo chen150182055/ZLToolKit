@@ -53,35 +53,35 @@ public:
 
 protected:
     virtual void onConnect(const SockException &ex) override {
-        //Á¬½Ó½á¹ûÊÂ¼ş
+        //è¿æ¥ç»“æœäº‹ä»¶
         InfoL << (ex ? ex.what() : "success");
     }
 
     virtual void onRecv(const Buffer::Ptr &pBuf) override {
-        //½ÓÊÕÊı¾İÊÂ¼ş
+        //æ¥æ”¶æ•°æ®äº‹ä»¶
         DebugL << pBuf->data();
     }
 
     virtual void onFlush() override {
-        //·¢ËÍ×èÈûºó£¬»º´æÇå¿ÕÊÂ¼ş
+        //å‘é€é˜»å¡åï¼Œç¼“å­˜æ¸…ç©ºäº‹ä»¶
         DebugL;
     }
 
     virtual void onErr(const SockException &ex) override {
-        //¶Ï¿ªÁ¬½ÓÊÂ¼ş£¬Ò»°ãÊÇEOF
+        //æ–­å¼€è¿æ¥äº‹ä»¶ï¼Œä¸€èˆ¬æ˜¯EOF
         WarnL << ex.what();
     }
 };
 
-//ÃüÁî(http)
+//å‘½ä»¤(http)
 class CMD_http : public CMD {
 public:
     CMD_http() {
         _client.reset(new TestClient);
         _parser.reset(new OptionParser([this](const std::shared_ptr<ostream> &stream, mINI &args) {
-            //ËùÓĞÑ¡Ïî½âÎöÍê±Ïºó´¥·¢¸Ã»Øµ÷£¬ÎÒÃÇ¿ÉÒÔÔÚÕâÀï×öÒ»Ğ©È«¾ÖµÄ²Ù×÷
+            //æ‰€æœ‰é€‰é¡¹è§£æå®Œæ¯•åè§¦å‘è¯¥å›è°ƒï¼Œæˆ‘ä»¬å¯ä»¥åœ¨è¿™é‡Œåšä¸€äº›å…¨å±€çš„æ“ä½œ
             if (hasKey("connect")) {
-                //·¢ÆğÁ¬½Ó²Ù×÷
+                //å‘èµ·è¿æ¥æ“ä½œ
                 connect(stream);
                 return;
             }
@@ -91,35 +91,35 @@ public:
             }
         }));
 
-        (*_parser) << Option('T', "type", Option::ArgRequired, nullptr, true, "Ó¦ÓÃ³ÌĞòÄ£Ê½£¬0£º´«Í³Ä£Ê½£¬1£ºshellÄ£Ê½", nullptr);
+        (*_parser) << Option('T', "type", Option::ArgRequired, nullptr, true, "åº”ç”¨ç¨‹åºæ¨¡å¼ï¼Œ0ï¼šä¼ ç»Ÿæ¨¡å¼ï¼Œ1ï¼šshellæ¨¡å¼", nullptr);
 
-        (*_parser) << Option('s',/*¸ÃÑ¡Ïî¼ò³Æ£¬Èç¹ûÊÇ\x00ÔòËµÃ÷ÎŞ¼ò³Æ*/
-                             "server",/*¸ÃÑ¡ÏîÈ«³Æ,Ã¿¸öÑ¡Ïî±ØĞëÓĞÈ«³Æ£»²»µÃÎªnull»ò¿Õ×Ö·û´®*/
-                             Option::ArgRequired,/*¸ÃÑ¡ÏîºóÃæ±ØĞë¸úÖµ*/
-                             "www.baidu.com:80",/*¸ÃÑ¡ÏîÄ¬ÈÏÖµ*/
-                             false,/*¸ÃÑ¡ÏîÊÇ·ñ±ØĞë¸³Öµ£¬Èç¹ûÃ»ÓĞÄ¬ÈÏÖµÇÒÎªArgRequiredÊ±ÓÃ»§±ØĞëÌá¹©¸Ã²ÎÊı·ñÔò½«Å×Òì³£*/
-                             "tcp·şÎñÆ÷µØÖ·£¬ÒÔÃ°ºÅ·Ö¸ô¶Ë¿ÚºÅ",/*¸ÃÑ¡ÏîËµÃ÷ÎÄ×Ö*/
-                             [this](const std::shared_ptr<ostream> &stream, const string &arg) {/*½âÎöµ½¸ÃÑ¡ÏîµÄ»Øµ÷*/
+        (*_parser) << Option('s',/*è¯¥é€‰é¡¹ç®€ç§°ï¼Œå¦‚æœæ˜¯\x00åˆ™è¯´æ˜æ— ç®€ç§°*/
+                             "server",/*è¯¥é€‰é¡¹å…¨ç§°,æ¯ä¸ªé€‰é¡¹å¿…é¡»æœ‰å…¨ç§°ï¼›ä¸å¾—ä¸ºnullæˆ–ç©ºå­—ç¬¦ä¸²*/
+                             Option::ArgRequired,/*è¯¥é€‰é¡¹åé¢å¿…é¡»è·Ÿå€¼*/
+                             "www.baidu.com:80",/*è¯¥é€‰é¡¹é»˜è®¤å€¼*/
+                             false,/*è¯¥é€‰é¡¹æ˜¯å¦å¿…é¡»èµ‹å€¼ï¼Œå¦‚æœæ²¡æœ‰é»˜è®¤å€¼ä¸”ä¸ºArgRequiredæ—¶ç”¨æˆ·å¿…é¡»æä¾›è¯¥å‚æ•°å¦åˆ™å°†æŠ›å¼‚å¸¸*/
+                             "tcpæœåŠ¡å™¨åœ°å€ï¼Œä»¥å†’å·åˆ†éš”ç«¯å£å·",/*è¯¥é€‰é¡¹è¯´æ˜æ–‡å­—*/
+                             [this](const std::shared_ptr<ostream> &stream, const string &arg) {/*è§£æåˆ°è¯¥é€‰é¡¹çš„å›è°ƒ*/
                                  if (arg.find(":") == string::npos) {
-                                     //ÖĞ¶ÏºóĞøÑ¡ÏîµÄ½âÎöÒÔ¼°½âÎöÍê±Ï»Øµ÷µÈ²Ù×÷
-                                     throw std::runtime_error("\tµØÖ·±ØĞëÖ¸Ã÷¶Ë¿ÚºÅ.");
+                                     //ä¸­æ–­åç»­é€‰é¡¹çš„è§£æä»¥åŠè§£æå®Œæ¯•å›è°ƒç­‰æ“ä½œ
+                                     throw std::runtime_error("\tåœ°å€å¿…é¡»æŒ‡æ˜ç«¯å£å·.");
                                  }
-                                 //Èç¹û·µ»ØfalseÔòºöÂÔºóĞøÑ¡ÏîµÄ½âÎö
+                                 //å¦‚æœè¿”å›falseåˆ™å¿½ç•¥åç»­é€‰é¡¹çš„è§£æ
                                  return true;
                              });
 
-        (*_parser) << Option('d', "disconnect", Option::ArgNone, nullptr, false, "ÊÇ·ñ¶Ï¿ªÁ¬½Ó",
+        (*_parser) << Option('d', "disconnect", Option::ArgNone, nullptr, false, "æ˜¯å¦æ–­å¼€è¿æ¥",
                              [this](const std::shared_ptr<ostream> &stream, const string &arg) {
-                                 //¶Ï¿ªÁ¬½Ó²Ù×÷£¬ËùÒÔºóĞøµÄ²ÎÊıÎÒÃÇ¶¼²»½âÎöÁË
+                                 //æ–­å¼€è¿æ¥æ“ä½œï¼Œæ‰€ä»¥åç»­çš„å‚æ•°æˆ‘ä»¬éƒ½ä¸è§£æäº†
                                  disconnect(stream);
                                  return false;
                              });
 
-        (*_parser) << Option('c', "connect", Option::ArgNone, nullptr, false, "·¢Æğtcp connect²Ù×÷", nullptr);
-        (*_parser) << Option('t', "time_out", Option::ArgRequired, "3", false, "Á¬½Ó³¬Ê±¼ä", nullptr);
-        (*_parser) << Option('m', "method", Option::ArgRequired, "GET", false, "HTTP·½·¨,Æ©ÈçGET¡¢POST", nullptr);
-        (*_parser) << Option('p', "path", Option::ArgRequired, "/index.html", false, "HTTP urlÂ·¾¶", nullptr);
-        (*_parser) << Option('C', "commit", Option::ArgNone, nullptr, false, "Ìá½»HTTPÇëÇó", nullptr);
+        (*_parser) << Option('c', "connect", Option::ArgNone, nullptr, false, "å‘èµ·tcp connectæ“ä½œ", nullptr);
+        (*_parser) << Option('t', "time_out", Option::ArgRequired, "3", false, "è¿æ¥è¶…æ—¶é—´", nullptr);
+        (*_parser) << Option('m', "method", Option::ArgRequired, "GET", false, "HTTPæ–¹æ³•,è­¬å¦‚GETã€POST", nullptr);
+        (*_parser) << Option('p', "path", Option::ArgRequired, "/index.html", false, "HTTP urlè·¯å¾„", nullptr);
+        (*_parser) << Option('C', "commit", Option::ArgNone, nullptr, false, "æäº¤HTTPè¯·æ±‚", nullptr);
 
 
     }
@@ -127,22 +127,22 @@ public:
     ~CMD_http() {}
 
     const char *description() const override {
-        return "http²âÊÔ¿Í»§¶Ë";
+        return "httpæµ‹è¯•å®¢æˆ·ç«¯";
     }
 
 private:
     void connect(const std::shared_ptr<ostream> &stream) {
-        (*stream) << "connect²Ù×÷" << endl;
+        (*stream) << "connectæ“ä½œ" << endl;
         _client->connect(splitedVal("server")[0], splitedVal("server")[1], (*this)["time_out"]);
     }
 
     void disconnect(const std::shared_ptr<ostream> &stream) {
-        (*stream) << "disconnect²Ù×÷" << endl;
+        (*stream) << "disconnectæ“ä½œ" << endl;
         _client->disconnect();
     }
 
     void commit(const std::shared_ptr<ostream> &stream) {
-        (*stream) << "commit²Ù×÷" << endl;
+        (*stream) << "commitæ“ä½œ" << endl;
         _client->commit((*this)["method"], (*this)["path"], (*this)["server"]);
     }
 
@@ -163,15 +163,15 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     if (GET_CMD("http")["type"] == 0) {
-        cout << "´«Í³Ä£Ê½£¬ÒÑÍË³ö³ÌĞò£¬Çë³¢ÊÔshellÄ£Ê½" << endl;
+        cout << "ä¼ ç»Ÿæ¨¡å¼ï¼Œå·²é€€å‡ºç¨‹åºï¼Œè¯·å°è¯•shellæ¨¡å¼" << endl;
         return 0;
     }
     GET_CMD("http").delOption("type");
-    //³õÊ¼»¯»·¾³
+    //åˆå§‹åŒ–ç¯å¢ƒ
     Logger::Instance().add(std::shared_ptr<ConsoleChannel>(new ConsoleChannel()));
     Logger::Instance().setWriter(std::shared_ptr<LogWriter>(new AsyncLogWriter()));
 
-    cout << "> »¶Ó­½øÈëÃüÁîÄ£Ê½£¬Äã¿ÉÒÔÊäÈë\"help\"ÃüÁî»ñÈ¡°ïÖú" << endl;
+    cout << "> æ¬¢è¿è¿›å…¥å‘½ä»¤æ¨¡å¼ï¼Œä½ å¯ä»¥è¾“å…¥\"help\"å‘½ä»¤è·å–å¸®åŠ©" << endl;
     string cmd_line;
     while (cin.good()) {
         try {

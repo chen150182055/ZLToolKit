@@ -20,7 +20,7 @@ using namespace std;
 using namespace toolkit;
 
 /**
-* »ØÏÔ»á»°
+* å›æ˜¾ä¼šè¯
 */
 class EchoSession : public TcpSession {
 public:
@@ -43,31 +43,31 @@ public:
     void onManager() override {}
 };
 
-//ÃüÁî(http)
+//å‘½ä»¤(http)
 class CMD_pingpong : public CMD {
 public:
     CMD_pingpong() {
         _parser.reset(new OptionParser(nullptr));
-        (*_parser) << Option('l', "listen", Option::ArgRequired, "10000", false, "·şÎñÆ÷Ä£Ê½£º¼àÌı¶Ë¿Ú", nullptr);
-        //²âÊÔ¿Í»§¶Ë¸öÊı£¬Ä¬ÈÏ10¸ö
-        (*_parser) << Option('c', "count", Option::ArgRequired, to_string(10).data(), false, "¿Í»§¶ËÄ£Ê½£º²âÊÔ¿Í»§¶Ë¸öÊı", nullptr);
-        //Ä¬ÈÏÃ¿´Î·¢ËÍ1MBµÄÊı¾İ
-        (*_parser) << Option('b', "block", Option::ArgRequired, to_string(1024 * 1024).data(), false, "¿Í»§¶ËÄ£Ê½£º²âÊÔÊı¾İ¿é´óĞ¡",
+        (*_parser) << Option('l', "listen", Option::ArgRequired, "10000", false, "æœåŠ¡å™¨æ¨¡å¼ï¼šç›‘å¬ç«¯å£", nullptr);
+        //æµ‹è¯•å®¢æˆ·ç«¯ä¸ªæ•°ï¼Œé»˜è®¤10ä¸ª
+        (*_parser) << Option('c', "count", Option::ArgRequired, to_string(10).data(), false, "å®¢æˆ·ç«¯æ¨¡å¼ï¼šæµ‹è¯•å®¢æˆ·ç«¯ä¸ªæ•°", nullptr);
+        //é»˜è®¤æ¯æ¬¡å‘é€1MBçš„æ•°æ®
+        (*_parser) << Option('b', "block", Option::ArgRequired, to_string(1024 * 1024).data(), false, "å®¢æˆ·ç«¯æ¨¡å¼ï¼šæµ‹è¯•æ•°æ®å—å¤§å°",
                              nullptr);
-        //Ä¬ÈÏ1Ãë·¢ËÍ10´Î£¬×ÜËÙ¶ÈÂÊÎª1MB/s * 10 * 10 = 100MB/s
-        (*_parser) << Option('i', "interval", Option::ArgRequired, to_string(100).data(), false, "¿Í»§¶ËÄ£Ê½£º²âÊÔÊı¾İ·¢ËÍ¼ä¸ô£¬µ¥Î»ºÁÃë",
+        //é»˜è®¤1ç§’å‘é€10æ¬¡ï¼Œæ€»é€Ÿåº¦ç‡ä¸º1MB/s * 10 * 10 = 100MB/s
+        (*_parser) << Option('i', "interval", Option::ArgRequired, to_string(100).data(), false, "å®¢æˆ·ç«¯æ¨¡å¼ï¼šæµ‹è¯•æ•°æ®å‘é€é—´éš”ï¼Œå•ä½æ¯«ç§’",
                              nullptr);
-        //¿Í»§¶ËÆô¶¯¼ä¸ôÊ±¼ä
-        (*_parser) << Option('d', "delay", Option::ArgRequired, "50", false, "·şÎñÆ÷Ä£Ê½£º¿Í»§¶ËÆô¶¯¼ä¸ôÊ±¼ä", nullptr);
+        //å®¢æˆ·ç«¯å¯åŠ¨é—´éš”æ—¶é—´
+        (*_parser) << Option('d', "delay", Option::ArgRequired, "50", false, "æœåŠ¡å™¨æ¨¡å¼ï¼šå®¢æˆ·ç«¯å¯åŠ¨é—´éš”æ—¶é—´", nullptr);
 
-        //Ö¸¶¨·şÎñÆ÷µØÖ·
-        (*_parser) << Option('s', "server", Option::ArgRequired, "127.0.0.1:10000", false, "¿Í»§¶ËÄ£Ê½£º²âÊÔ·şÎñÆ÷µØÖ·", []
+        //æŒ‡å®šæœåŠ¡å™¨åœ°å€
+        (*_parser) << Option('s', "server", Option::ArgRequired, "127.0.0.1:10000", false, "å®¢æˆ·ç«¯æ¨¡å¼ï¼šæµ‹è¯•æœåŠ¡å™¨åœ°å€", []
                 (const std::shared_ptr<ostream> &stream, const string &arg) {
             if (arg.find(":") == string::npos) {
-                //ÖĞ¶ÏºóĞøÑ¡ÏîµÄ½âÎöÒÔ¼°½âÎöÍê±Ï»Øµ÷µÈ²Ù×÷
-                throw std::runtime_error("\tµØÖ·±ØĞëÖ¸Ã÷¶Ë¿ÚºÅ.");
+                //ä¸­æ–­åç»­é€‰é¡¹çš„è§£æä»¥åŠè§£æå®Œæ¯•å›è°ƒç­‰æ“ä½œ
+                throw std::runtime_error("\tåœ°å€å¿…é¡»æŒ‡æ˜ç«¯å£å·.");
             }
-            //Èç¹û·µ»ØfalseÔòºöÂÔºóĞøÑ¡ÏîµÄ½âÎö
+            //å¦‚æœè¿”å›falseåˆ™å¿½ç•¥åç»­é€‰é¡¹çš„è§£æ
             return true;
         });
     }
@@ -75,7 +75,7 @@ public:
     ~CMD_pingpong() {}
 
     const char *description() const override {
-        return "tcp»ØÏÔĞÔÄÜ²âÊÔ";
+        return "tcpå›æ˜¾æ€§èƒ½æµ‹è¯•";
     }
 };
 
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    //³õÊ¼»¯»·¾³
+    //åˆå§‹åŒ–ç¯å¢ƒ
     Logger::Instance().add(std::shared_ptr<ConsoleChannel>(new ConsoleChannel()));
     Logger::Instance().setWriter(std::shared_ptr<LogWriter>(new AsyncLogWriter()));
 
@@ -150,9 +150,9 @@ int main(int argc, char *argv[]) {
             usleep(delay * 1000);
         }
 
-        //ÉèÖÃÍË³öĞÅºÅ´¦Àíº¯Êı
+        //è®¾ç½®é€€å‡ºä¿¡å·å¤„ç†å‡½æ•°
         static semaphore sem;
-        signal(SIGINT, [](int) { sem.post(); });// ÉèÖÃÍË³öĞÅºÅ
+        signal(SIGINT, [](int) { sem.post(); });// è®¾ç½®é€€å‡ºä¿¡å·
         sem.wait();
     }
     return 0;

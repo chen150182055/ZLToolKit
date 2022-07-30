@@ -19,33 +19,33 @@ using namespace std;
 using namespace toolkit;
 
 int main() {
-    //ÉèÖÃÈÕÖ¾
+    //è®¾ç½®æ—¥å¿—
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
     Logger::Instance().setWriter(std::make_shared<AsyncLogWriter>());
 
 
     Ticker ticker0;
     Timer::Ptr timer0 = std::make_shared<Timer>(0.5f, [&]() {
-        TraceL << "timer0ÖØ¸´:" << ticker0.elapsedTime();
+        TraceL << "timer0é‡å¤:" << ticker0.elapsedTime();
         ticker0.resetTime();
         return true;
     }, nullptr);
 
     Timer::Ptr timer1 = std::make_shared<Timer>(1.0f, []() {
-        DebugL << "timer1²»ÔÙÖØ¸´";
+        DebugL << "timer1ä¸å†é‡å¤";
         return false;
     }, nullptr);
 
     Ticker ticker2;
     Timer::Ptr timer2 = std::make_shared<Timer>(2.0f, [&]() -> bool {
-        InfoL << "timer2,²âÊÔÈÎÎñÖĞÅ×Òì³£" << ticker2.elapsedTime();
+        InfoL << "timer2,æµ‹è¯•ä»»åŠ¡ä¸­æŠ›å¼‚å¸¸" << ticker2.elapsedTime();
         ticker2.resetTime();
-        throw std::runtime_error("timer2,²âÊÔÈÎÎñÖĞÅ×Òì³£");
+        throw std::runtime_error("timer2,æµ‹è¯•ä»»åŠ¡ä¸­æŠ›å¼‚å¸¸");
     }, nullptr);
 
-    //ÍË³ö³ÌĞòÊÂ¼ş´¦Àí
+    //é€€å‡ºç¨‹åºäº‹ä»¶å¤„ç†
     static semaphore sem;
-    signal(SIGINT, [](int) { sem.post(); });// ÉèÖÃÍË³öĞÅºÅ
+    signal(SIGINT, [](int) { sem.post(); });// è®¾ç½®é€€å‡ºä¿¡å·
     sem.wait();
     return 0;
 }

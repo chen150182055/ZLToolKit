@@ -16,24 +16,24 @@
 using namespace std;
 using namespace toolkit;
 
-//¹ã²¥Ãû³Æ1
+//å¹¿æ’­åç§°1
 #define NOTICE_NAME1 "NOTICE_NAME1"
-//¹ã²¥Ãû³Æ2
+//å¹¿æ’­åç§°2
 #define NOTICE_NAME2 "NOTICE_NAME2"
 
-//³ÌĞòÍË³ö±ê¼Ç
+//ç¨‹åºé€€å‡ºæ ‡è®°
 bool g_bExitFlag = false;
 
 
 int main() {
-    //ÉèÖÃ³ÌĞòÍË³öĞÅºÅ´¦Àíº¯Êı
+    //è®¾ç½®ç¨‹åºé€€å‡ºä¿¡å·å¤„ç†å‡½æ•°
     signal(SIGINT, [](int) { g_bExitFlag = true; });
-    //ÉèÖÃÈÕÖ¾
+    //è®¾ç½®æ—¥å¿—
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
 
-    //¶ÔÊÂ¼şNOTICE_NAME1ĞÂÔöÒ»¸ö¼àÌı
-    //addListener·½·¨µÚÒ»¸ö²ÎÊıÊÇ±êÇ©£¬ÓÃÀ´É¾³ı¼àÌıÊ±Ê¹ÓÃ
-    //ĞèÒª×¢ÒâµÄÊÇ¼àÌı»Øµ÷µÄ²ÎÊıÁĞ±í¸öÊıÀàĞÍĞèÒªÓëemitEvent¹ã²¥Ê±µÄÍêÈ«Ò»ÖÂ£¬·ñÔò»áÓĞÎŞ·¨Ô¤ÖªµÄ´íÎó
+    //å¯¹äº‹ä»¶NOTICE_NAME1æ–°å¢ä¸€ä¸ªç›‘å¬
+    //addListeneræ–¹æ³•ç¬¬ä¸€ä¸ªå‚æ•°æ˜¯æ ‡ç­¾ï¼Œç”¨æ¥åˆ é™¤ç›‘å¬æ—¶ä½¿ç”¨
+    //éœ€è¦æ³¨æ„çš„æ˜¯ç›‘å¬å›è°ƒçš„å‚æ•°åˆ—è¡¨ä¸ªæ•°ç±»å‹éœ€è¦ä¸emitEventå¹¿æ’­æ—¶çš„å®Œå…¨ä¸€è‡´ï¼Œå¦åˆ™ä¼šæœ‰æ— æ³•é¢„çŸ¥çš„é”™è¯¯
     NoticeCenter::Instance().addListener(0, NOTICE_NAME1,
                                          [](int &a, const char *&b, double &c, string &d) {
                                              DebugL << a << " " << b << " " << c << " " << d;
@@ -47,7 +47,7 @@ int main() {
                                                                                   });
                                          });
 
-    //¼àÌıNOTICE_NAME2ÊÂ¼ş
+    //ç›‘å¬NOTICE_NAME2äº‹ä»¶
     NoticeCenter::Instance().addListener(0, NOTICE_NAME2, [](string &d, double &c, const char *&b, int &a) {
         DebugL << a << " " << b << " " << c << " " << d;
         NoticeCenter::Instance().delListener(0, NOTICE_NAME2);
@@ -65,7 +65,7 @@ int main() {
         const char *b = "b";
         double c = 3.14;
         string d("d");
-        //Ã¿¸ô1Ãë¹ã²¥Ò»´ÎÊÂ¼ş£¬Èç¹ûÎŞ·¨È·¶¨²ÎÊıÀàĞÍ£¬¿É¼ÓÇ¿ÖÆ×ª»»
+        //æ¯éš”1ç§’å¹¿æ’­ä¸€æ¬¡äº‹ä»¶ï¼Œå¦‚æœæ— æ³•ç¡®å®šå‚æ•°ç±»å‹ï¼Œå¯åŠ å¼ºåˆ¶è½¬æ¢
         NoticeCenter::Instance().emitEvent(NOTICE_NAME1, ++a, (const char *) "b", c, d);
         NoticeCenter::Instance().emitEvent(NOTICE_NAME2, d, c, b, a);
         sleep(1); // sleep 1 second

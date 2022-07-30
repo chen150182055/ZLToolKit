@@ -24,7 +24,7 @@ public:
 
     ~TestLog() {};
 
-    //Í¨¹ı´ËÓÑÔª·½·¨£¬¿ÉÒÔ´òÓ¡×Ô¶¨ÒåÊı¾İÀàĞÍ
+    //é€šè¿‡æ­¤å‹å…ƒæ–¹æ³•ï¼Œå¯ä»¥æ‰“å°è‡ªå®šä¹‰æ•°æ®ç±»å‹
     friend ostream &operator<<(ostream &out, const TestLog &obj) {
         return out << obj._ss.str();
     }
@@ -34,13 +34,13 @@ private:
 };
 
 int main() {
-    //³õÊ¼»¯ÈÕÖ¾ÏµÍ³
+    //åˆå§‹åŒ–æ—¥å¿—ç³»ç»Ÿ
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
     Logger::Instance().add(std::make_shared<FileChannel>());
     Logger::Instance().setWriter(std::make_shared<AsyncLogWriter>());
 
-    InfoL << "²âÊÔstd::cout·ç¸ñ´òÓ¡£º";
-    //ostreamÖ§³ÖµÄÊı¾İÀàĞÍ¶¼Ö§³Ö,¿ÉÒÔÍ¨¹ıÓÑÔªµÄ·½Ê½´òÓ¡×Ô¶¨ÒåÀàĞÍÊı¾İ
+    InfoL << "æµ‹è¯•std::couté£æ ¼æ‰“å°ï¼š";
+    //ostreamæ”¯æŒçš„æ•°æ®ç±»å‹éƒ½æ”¯æŒ,å¯ä»¥é€šè¿‡å‹å…ƒçš„æ–¹å¼æ‰“å°è‡ªå®šä¹‰ç±»å‹æ•°æ®
     TraceL << "object int" << TestLog((int) 1) << endl;
     DebugL << "object short:" << TestLog((short) 2) << endl;
     InfoL << "object float:" << TestLog((float) 3.12345678) << endl;
@@ -48,23 +48,23 @@ int main() {
     ErrorL << "object void *:" << TestLog((void *) 0x12345678) << endl;
     ErrorL << "object string:" << TestLog("test string") << endl;
 
-    //ÕâÊÇostreamÔ­ÉúÖ§³ÖµÄÊı¾İÀàĞÍ
+    //è¿™æ˜¯ostreamåŸç”Ÿæ”¯æŒçš„æ•°æ®ç±»å‹
     TraceL << "int" << (int) 1 << endl;
     DebugL << "short:" << (short) 2 << endl;
     InfoL << "float:" << (float) 3.12345678 << endl;
     WarnL << "double:" << (double) 4.12345678901234567 << endl;
     ErrorL << "void *:" << (void *) 0x12345678 << endl;
-    //¸ù¾İRAIIµÄÔ­Àí£¬´Ë´¦²»ĞèÒªÊäÈë endl£¬Ò²»áÔÚ±»º¯ÊıÕ»popÊ±´òÓ¡log
+    //æ ¹æ®RAIIçš„åŸç†ï¼Œæ­¤å¤„ä¸éœ€è¦è¾“å…¥ endlï¼Œä¹Ÿä¼šåœ¨è¢«å‡½æ•°æ ˆpopæ—¶æ‰“å°log
     ErrorL << "without endl!";
 
-    PrintI("²âÊÔprintf·ç¸ñ´òÓ¡£º");
+    PrintI("æµ‹è¯•printfé£æ ¼æ‰“å°ï¼š");
     PrintT("this is a %s test:%d", "printf trace", 124);
     PrintD("this is a %s test:%p", "printf debug", (void *) 124);
     PrintI("this is a %s test:%c", "printf info", 'a');
     PrintW("this is a %s test:%X", "printf warn", 0x7F);
     PrintE("this is a %s test:%x", "printf err", 0xab);
 
-    LogI("²âÊÔ¿É±ä³¤¶ÈÄ£°åÑùÊ½´òÓ¡£º");
+    LogI("æµ‹è¯•å¯å˜é•¿åº¦æ¨¡æ¿æ ·å¼æ‰“å°ï¼š");
     LogT(1, "+", "2", '=', 3);
     LogD(1, "+", "2", '=', 3);
     LogI(1, "+", "2", '=', 3);

@@ -35,18 +35,18 @@ public:
     }
 
     virtual void onRecv(const Buffer::Ptr &buf) override {
-        //´¦Àí¿Í»§¶Ë·¢ËÍ¹ıÀ´µÄÊı¾İ
+        //å¤„ç†å®¢æˆ·ç«¯å‘é€è¿‡æ¥çš„æ•°æ®
         TraceL << buf->data() << " from port:" << get_local_port();
         send(buf);
     }
 
     virtual void onError(const SockException &err) override {
-        //¿Í»§¶Ë¶Ï¿ªÁ¬½Ó»òÆäËûÔ­Òòµ¼ÖÂ¸Ã¶ÔÏóÍÑÀëTCPServer¹ÜÀí
+        //å®¢æˆ·ç«¯æ–­å¼€è¿æ¥æˆ–å…¶ä»–åŸå› å¯¼è‡´è¯¥å¯¹è±¡è„±ç¦»TCPServerç®¡ç†
         WarnL << err.what();
     }
 
     virtual void onManager() override {
-        //¶¨Ê±¹ÜÀí¸Ã¶ÔÏó£¬Æ©Èç»á»°³¬Ê±¼ì²é
+        //å®šæ—¶ç®¡ç†è¯¥å¯¹è±¡ï¼Œè­¬å¦‚ä¼šè¯è¶…æ—¶æ£€æŸ¥
         DebugL;
     }
 
@@ -56,24 +56,24 @@ private:
 
 
 int main() {
-    //³õÊ¼»¯ÈÕÖ¾Ä£¿é
+    //åˆå§‹åŒ–æ—¥å¿—æ¨¡å—
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
     Logger::Instance().setWriter(std::make_shared<AsyncLogWriter>());
 
-    //¼ÓÔØÖ¤Êé£¬Ö¤Êé°üº¬¹«Ô¿ºÍË½Ô¿
+    //åŠ è½½è¯ä¹¦ï¼Œè¯ä¹¦åŒ…å«å…¬é’¥å’Œç§é’¥
     SSL_Initor::Instance().loadCertificate((exeDir() + "ssl.p12").data());
     SSL_Initor::Instance().trustCertificate((exeDir() + "ssl.p12").data());
     SSL_Initor::Instance().ignoreInvalidCertificate(false);
 
     TcpServer::Ptr server(new TcpServer());
-    server->start<EchoSession>(9000);//¼àÌı9000¶Ë¿Ú
+    server->start<EchoSession>(9000);//ç›‘å¬9000ç«¯å£
 
     TcpServer::Ptr serverSSL(new TcpServer());
-    serverSSL->start<TcpSessionWithSSL<EchoSession> >(9001);//¼àÌı9001¶Ë¿Ú
+    serverSSL->start<TcpSessionWithSSL<EchoSession> >(9001);//ç›‘å¬9001ç«¯å£
 
-    //ÍË³ö³ÌĞòÊÂ¼ş´¦Àí
+    //é€€å‡ºç¨‹åºäº‹ä»¶å¤„ç†
     static semaphore sem;
-    signal(SIGINT, [](int) { sem.post(); });// ÉèÖÃÍË³öĞÅºÅ
+    signal(SIGINT, [](int) { sem.post(); });// è®¾ç½®é€€å‡ºä¿¡å·
     sem.wait();
     return 0;
 }

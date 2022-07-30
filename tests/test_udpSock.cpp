@@ -17,10 +17,10 @@
 using namespace std;
 using namespace toolkit;
 
-//Ö÷Ïß³ÌÍË³ö±êÖ¾
+//ä¸»çº¿ç¨‹é€€å‡ºæ ‡å¿—
 bool exitProgram = false;
 
-//¸³Öµstruct sockaddr
+//èµ‹å€¼struct sockaddr
 void makeAddr(struct sockaddr *out, const char *ip, uint16_t port) {
     struct sockaddr_in &servaddr = *((struct sockaddr_in *) out);
     servaddr.sin_family = AF_INET;
@@ -29,34 +29,34 @@ void makeAddr(struct sockaddr *out, const char *ip, uint16_t port) {
     bzero(&(servaddr.sin_zero), sizeof servaddr.sin_zero);
 }
 
-//»ñÈ¡struct sockaddrµÄIP×Ö·û´®
+//è·å–struct sockaddrçš„IPå­—ç¬¦ä¸²
 string getIP(struct sockaddr *addr) {
     return SockUtil::inet_ntoa(((struct sockaddr_in *) addr)->sin_addr);
 }
 
 int main() {
-    //ÉèÖÃ³ÌĞòÍË³öĞÅºÅ´¦Àíº¯Êı
+    //è®¾ç½®ç¨‹åºé€€å‡ºä¿¡å·å¤„ç†å‡½æ•°
     signal(SIGINT, [](int) { exitProgram = true; });
-    //ÉèÖÃÈÕÖ¾ÏµÍ³
+    //è®¾ç½®æ—¥å¿—ç³»ç»Ÿ
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
     Logger::Instance().setWriter(std::make_shared<AsyncLogWriter>());
 
-    Socket::Ptr sockRecv = Socket::createSocket();//´´½¨Ò»¸öUDPÊı¾İ½ÓÊÕ¶Ë¿Ú
-    Socket::Ptr sockSend = Socket::createSocket();//´´½¨Ò»¸öUDPÊı¾İ·¢ËÍ¶Ë¿Ú
-    sockRecv->bindUdpSock(9001);//½ÓÊÕUDP°ó¶¨9001¶Ë¿Ú
-    sockSend->bindUdpSock(0);//·¢ËÍUDPËæ»ú¶Ë¿Ú
+    Socket::Ptr sockRecv = Socket::createSocket();//åˆ›å»ºä¸€ä¸ªUDPæ•°æ®æ¥æ”¶ç«¯å£
+    Socket::Ptr sockSend = Socket::createSocket();//åˆ›å»ºä¸€ä¸ªUDPæ•°æ®å‘é€ç«¯å£
+    sockRecv->bindUdpSock(9001);//æ¥æ”¶UDPç»‘å®š9001ç«¯å£
+    sockSend->bindUdpSock(0);//å‘é€UDPéšæœºç«¯å£
 
     sockRecv->setOnRead([](const Buffer::Ptr &buf, struct sockaddr *addr, int) {
-        //½ÓÊÕµ½Êı¾İ»Øµ÷
+        //æ¥æ”¶åˆ°æ•°æ®å›è°ƒ
         DebugL << "recv data form " << getIP(addr) << ":" << buf->data();
     });
 
     struct sockaddr addrDst;
-    makeAddr(&addrDst, "127.0.0.1", 9001);//UDPÊı¾İ·¢ËÍµØÖ·
+    makeAddr(&addrDst, "127.0.0.1", 9001);//UDPæ•°æ®å‘é€åœ°å€
 //	sockSend->bindPeerAddr(&addrDst);
     int i = 0;
     while (!exitProgram) {
-        //Ã¿¸ôÒ»ÃëÍù¶Ô·½·¢ËÍÊı¾İ
+        //æ¯éš”ä¸€ç§’å¾€å¯¹æ–¹å‘é€æ•°æ®
         sockSend->send(to_string(i++), &addrDst, sizeof(struct sockaddr_in));
         sleep(1);
     }

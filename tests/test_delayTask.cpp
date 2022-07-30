@@ -20,17 +20,17 @@ using namespace std;
 using namespace toolkit;
 
 int main() {
-    //ÉèÖÃÈÕÖ¾
+    //è®¾ç½®æ—¥å¿—
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
     Logger::Instance().setWriter(std::make_shared<AsyncLogWriter>());
 
     Ticker ticker0;
     int nextDelay0 = 50;
     std::shared_ptr<onceToken> token0 = std::make_shared<onceToken>(nullptr, []() {
-        TraceL << "task 0 ±»È¡Ïû£¬¿ÉÒÔÁ¢¼´´¥·¢ÊÍ·Ålambad±í´ïÊ½²¶»ñµÄ±äÁ¿!";
+        TraceL << "task 0 è¢«å–æ¶ˆï¼Œå¯ä»¥ç«‹å³è§¦å‘é‡Šæ”¾lambadè¡¨è¾¾å¼æ•èŽ·çš„å˜é‡!";
     });
     auto tag0 = EventPollerPool::Instance().getPoller()->doDelayTask(nextDelay0, [&, token0]() {
-        TraceL << "task 0(¹Ì¶¨ÑÓÊ±ÖØ¸´ÈÎÎñ),Ô¤ÆÚÐÝÃßÊ±¼ä :" << nextDelay0 << " Êµ¼ÊÐÝÃßÊ±¼ä" << ticker0.elapsedTime();
+        TraceL << "task 0(å›ºå®šå»¶æ—¶é‡å¤ä»»åŠ¡),é¢„æœŸä¼‘çœ æ—¶é—´ :" << nextDelay0 << " å®žé™…ä¼‘çœ æ—¶é—´" << ticker0.elapsedTime();
         ticker0.resetTime();
         return nextDelay0;
     });
@@ -39,7 +39,7 @@ int main() {
     Ticker ticker1;
     int nextDelay1 = 50;
     auto tag1 = EventPollerPool::Instance().getPoller()->doDelayTask(nextDelay1, [&]() {
-        DebugL << "task 1(¿É±äÑÓÊ±ÖØ¸´ÈÎÎñ),Ô¤ÆÚÐÝÃßÊ±¼ä :" << nextDelay1 << " Êµ¼ÊÐÝÃßÊ±¼ä" << ticker1.elapsedTime();
+        DebugL << "task 1(å¯å˜å»¶æ—¶é‡å¤ä»»åŠ¡),é¢„æœŸä¼‘çœ æ—¶é—´ :" << nextDelay1 << " å®žé™…ä¼‘çœ æ—¶é—´" << ticker1.elapsedTime();
         ticker1.resetTime();
         nextDelay1 += 1;
         return nextDelay1;
@@ -48,25 +48,25 @@ int main() {
     Ticker ticker2;
     int nextDelay2 = 3000;
     auto tag2 = EventPollerPool::Instance().getPoller()->doDelayTask(nextDelay2, [&]() {
-        InfoL << "task 2(µ¥´ÎÑÓÊ±ÈÎÎñ),Ô¤ÆÚÐÝÃßÊ±¼ä :" << nextDelay2 << " Êµ¼ÊÐÝÃßÊ±¼ä" << ticker2.elapsedTime();
+        InfoL << "task 2(å•æ¬¡å»¶æ—¶ä»»åŠ¡),é¢„æœŸä¼‘çœ æ—¶é—´ :" << nextDelay2 << " å®žé™…ä¼‘çœ æ—¶é—´" << ticker2.elapsedTime();
         return 0;
     });
 
     Ticker ticker3;
     int nextDelay3 = 50;
     auto tag3 = EventPollerPool::Instance().getPoller()->doDelayTask(nextDelay3, [&]() -> uint64_t {
-        throw std::runtime_error("task 2(²âÊÔÑÓÊ±ÈÎÎñÖÐÅ×Òì³£,½«µ¼ÖÂ²»ÔÙ¼ÌÐø¸ÃÑÓÊ±ÈÎÎñ)");
+        throw std::runtime_error("task 2(æµ‹è¯•å»¶æ—¶ä»»åŠ¡ä¸­æŠ›å¼‚å¸¸,å°†å¯¼è‡´ä¸å†ç»§ç»­è¯¥å»¶æ—¶ä»»åŠ¡)");
     });
 
 
     sleep(2);
     tag0->cancel();
     tag1->cancel();
-    WarnL << "È¡Ïûtask 0¡¢1";
+    WarnL << "å–æ¶ˆtask 0ã€1";
 
-    //ÍË³ö³ÌÐòÊÂ¼þ´¦Àí
+    //é€€å‡ºç¨‹åºäº‹ä»¶å¤„ç†
     static semaphore sem;
-    signal(SIGINT, [](int) { sem.post(); });// ÉèÖÃÍË³öÐÅºÅ
+    signal(SIGINT, [](int) { sem.post(); });// è®¾ç½®é€€å‡ºä¿¡å·
     sem.wait();
     return 0;
 }

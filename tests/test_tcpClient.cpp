@@ -30,27 +30,27 @@ public:
 
 protected:
     virtual void onConnect(const SockException &ex) override {
-        //Á¬½Ó½á¹ûÊÂ¼ş
+        //è¿æ¥ç»“æœäº‹ä»¶
         InfoL << (ex ? ex.what() : "success");
     }
 
     virtual void onRecv(const Buffer::Ptr &pBuf) override {
-        //½ÓÊÕÊı¾İÊÂ¼ş
+        //æ¥æ”¶æ•°æ®äº‹ä»¶
         DebugL << pBuf->data() << " from port:" << get_peer_port();
     }
 
     virtual void onFlush() override {
-        //·¢ËÍ×èÈûºó£¬»º´æÇå¿ÕÊÂ¼ş
+        //å‘é€é˜»å¡åï¼Œç¼“å­˜æ¸…ç©ºäº‹ä»¶
         DebugL;
     }
 
     virtual void onErr(const SockException &ex) override {
-        //¶Ï¿ªÁ¬½ÓÊÂ¼ş£¬Ò»°ãÊÇEOF
+        //æ–­å¼€è¿æ¥äº‹ä»¶ï¼Œä¸€èˆ¬æ˜¯EOF
         WarnL << ex.what();
     }
 
     virtual void onManager() override {
-        //¶¨Ê±·¢ËÍÊı¾İµ½·şÎñÆ÷
+        //å®šæ—¶å‘é€æ•°æ®åˆ°æœåŠ¡å™¨
         auto buf = BufferRaw::create();
         if (buf) {
             buf->assign("[BufferRaw]\0");
@@ -67,19 +67,19 @@ private:
 
 
 int main() {
-    // ÉèÖÃÈÕÖ¾ÏµÍ³
+    // è®¾ç½®æ—¥å¿—ç³»ç»Ÿ
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
     Logger::Instance().setWriter(std::make_shared<AsyncLogWriter>());
 
-    TestClient::Ptr client(new TestClient());//±ØĞëÊ¹ÓÃÖÇÄÜÖ¸Õë
-    client->startConnect("127.0.0.1", 9000);//Á¬½Ó·şÎñÆ÷
+    TestClient::Ptr client(new TestClient());//å¿…é¡»ä½¿ç”¨æ™ºèƒ½æŒ‡é’ˆ
+    client->startConnect("127.0.0.1", 9000);//è¿æ¥æœåŠ¡å™¨
 
-    TcpClientWithSSL<TestClient>::Ptr clientSSL(new TcpClientWithSSL<TestClient>());//±ØĞëÊ¹ÓÃÖÇÄÜÖ¸Õë
-    clientSSL->startConnect("127.0.0.1", 9001);//Á¬½Ó·şÎñÆ÷
+    TcpClientWithSSL<TestClient>::Ptr clientSSL(new TcpClientWithSSL<TestClient>());//å¿…é¡»ä½¿ç”¨æ™ºèƒ½æŒ‡é’ˆ
+    clientSSL->startConnect("127.0.0.1", 9001);//è¿æ¥æœåŠ¡å™¨
 
-    //ÍË³ö³ÌĞòÊÂ¼ş´¦Àí
+    //é€€å‡ºç¨‹åºäº‹ä»¶å¤„ç†
     static semaphore sem;
-    signal(SIGINT, [](int) { sem.post(); });// ÉèÖÃÍË³öĞÅºÅ
+    signal(SIGINT, [](int) { sem.post(); });// è®¾ç½®é€€å‡ºä¿¡å·
     sem.wait();
     return 0;
 }

@@ -22,7 +22,7 @@ int main() {
     signal(SIGINT, [](int) {
         exit(0);
     });
-    //³õÊ¼»¯ÈÕÖ¾ÏµÍ³
+    //åˆå§‹åŒ–æ—¥å¿—ç³»ç»Ÿ
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
 
     atomic_llong count(0);
@@ -32,19 +32,19 @@ int main() {
     for (int i = 0; i < 1000 * 10000; ++i) {
         pool.async([&]() {
             if (++count >= 1000 * 10000) {
-                InfoL << "Ö´ĞĞ1000ÍòÈÎÎñ×Ü¹²ºÄÊ±:" << ticker.elapsedTime() << "ms";
+                InfoL << "æ‰§è¡Œ1000ä¸‡ä»»åŠ¡æ€»å…±è€—æ—¶:" << ticker.elapsedTime() << "ms";
             }
         });
     }
-    InfoL << "1000ÍòÈÎÎñÈë¶ÓºÄÊ±:" << ticker.elapsedTime() << "ms" << endl;
+    InfoL << "1000ä¸‡ä»»åŠ¡å…¥é˜Ÿè€—æ—¶:" << ticker.elapsedTime() << "ms" << endl;
     uint64_t lastCount = 0, nowCount = 1;
     ticker.resetTime();
-    //´Ë´¦²Å¿ªÊ¼Æô¶¯Ïß³Ì
+    //æ­¤å¤„æ‰å¼€å§‹å¯åŠ¨çº¿ç¨‹
     pool.start();
     while (true) {
         sleep(1);
         nowCount = count.load();
-        InfoL << "Ã¿ÃëÖ´ĞĞÈÎÎñÊı:" << nowCount - lastCount;
+        InfoL << "æ¯ç§’æ‰§è¡Œä»»åŠ¡æ•°:" << nowCount - lastCount;
         if (nowCount - lastCount == 0) {
             break;
         }

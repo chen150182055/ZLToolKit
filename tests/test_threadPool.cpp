@@ -18,15 +18,15 @@ using namespace std;
 using namespace toolkit;
 
 int main() {
-    //³õÊ¼»¯ÈÕÖ¾ÏµÍ³
+    //åˆå§‹åŒ–æ—¥å¿—ç³»ç»Ÿ
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
     Logger::Instance().setWriter(std::make_shared<AsyncLogWriter>());
 
     ThreadPool pool(thread::hardware_concurrency(), ThreadPool::PRIORITY_HIGHEST, true);
 
-    //Ã¿¸öÈÎÎñºÄÊ±3Ãë
+    //æ¯ä¸ªä»»åŠ¡è€—æ—¶3ç§’
     auto task_second = 3;
-    //Ã¿¸öÏß³ÌÆ½¾ùÖ´ĞĞ4´ÎÈÎÎñ£¬×ÜºÄÊ±Ó¦¸ÃÎª12Ãë
+    //æ¯ä¸ªçº¿ç¨‹å¹³å‡æ‰§è¡Œ4æ¬¡ä»»åŠ¡ï¼Œæ€»è€—æ—¶åº”è¯¥ä¸º12ç§’
     auto task_count = thread::hardware_concurrency() * 4;
 
     semaphore sem;
@@ -34,7 +34,7 @@ int main() {
     vec.resize(task_count);
     Ticker ticker;
     {
-        //·ÅÔÚ×÷ÓÃÓòÖĞÈ·±£tokenÒıÓÃ´ÎÊı¼õ1
+        //æ”¾åœ¨ä½œç”¨åŸŸä¸­ç¡®ä¿tokenå¼•ç”¨æ¬¡æ•°å‡1
         auto token = std::make_shared<onceToken>(nullptr, [&]() {
             sem.post();
         });
@@ -42,7 +42,7 @@ int main() {
         for (auto i = 0; i < task_count; ++i) {
             pool.async([token, i, task_second, &vec]() {
                 setThreadName(("thread pool " + to_string(i)).data());
-                std::this_thread::sleep_for(std::chrono::seconds(task_second)); //ĞİÃßÈıÃë
+                std::this_thread::sleep_for(std::chrono::seconds(task_second)); //ä¼‘çœ ä¸‰ç§’
                 InfoL << "task " << i << " done!";
                 vec[i] = i;
             });
@@ -52,7 +52,7 @@ int main() {
     sem.wait();
     InfoL << "all task done, used milliseconds:" << ticker.elapsedTime();
 
-    //´òÓ¡Ö´ĞĞ½á¹û
+    //æ‰“å°æ‰§è¡Œç»“æœ
     for (auto i = 0; i < task_count; ++i) {
         InfoL << vec[i];
     }

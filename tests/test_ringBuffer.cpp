@@ -19,28 +19,28 @@
 using namespace std;
 using namespace toolkit;
 
-//»·ĞÎ»º´æĞ´Ïß³ÌÍË³ö±ê¼Ç
+//ç¯å½¢ç¼“å­˜å†™çº¿ç¨‹é€€å‡ºæ ‡è®°
 bool g_bExitWrite = false;
 
-//Ò»¸ö30¸östring¶ÔÏóµÄ»·ĞÎ»º´æ
+//ä¸€ä¸ª30ä¸ªstringå¯¹è±¡çš„ç¯å½¢ç¼“å­˜
 RingBuffer<string>::Ptr g_ringBuf(new RingBuffer<string>(30));
 
-//Ğ´ÊÂ¼ş»Øµ÷º¯Êı
+//å†™äº‹ä»¶å›è°ƒå‡½æ•°
 void onReadEvent(const string &str) {
-    //¶ÁÊÂ¼şÄ£Ê½ĞÔ
+    //è¯»äº‹ä»¶æ¨¡å¼æ€§
     DebugL << str;
 }
 
-//»·ĞÎ»º´æÏú»ÙÊÂ¼ş
+//ç¯å½¢ç¼“å­˜é”€æ¯äº‹ä»¶
 void onDetachEvent() {
     WarnL;
 }
 
-//Ğ´»·ĞÎ»º´æÈÎÎñ
+//å†™ç¯å½¢ç¼“å­˜ä»»åŠ¡
 void doWrite() {
     int i = 0;
     while (!g_bExitWrite) {
-        //Ã¿¸ô100msĞ´Ò»¸öÊı¾İµ½»·ĞÎ»º´æ
+        //æ¯éš”100mså†™ä¸€ä¸ªæ•°æ®åˆ°ç¯å½¢ç¼“å­˜
         g_ringBuf->write(to_string(++i), true);
         usleep(100 * 1000);
     }
@@ -48,22 +48,22 @@ void doWrite() {
 }
 
 int main() {
-    //³õÊ¼»¯ÈÕÖ¾
+    //åˆå§‹åŒ–æ—¥å¿—
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
     Logger::Instance().setWriter(std::make_shared<AsyncLogWriter>());
 
     auto poller = EventPollerPool::Instance().getPoller();
     RingBuffer<string>::RingReader::Ptr ringReader;
     poller->sync([&]() {
-        //´Ó»·ĞÎ»º´æ»ñÈ¡Ò»¸ö¶ÁÈ¡Æ÷
+        //ä»ç¯å½¢ç¼“å­˜è·å–ä¸€ä¸ªè¯»å–å™¨
         ringReader = g_ringBuf->attach(poller);
 
-        //ÉèÖÃ¶ÁÈ¡ÊÂ¼ş
+        //è®¾ç½®è¯»å–äº‹ä»¶
         ringReader->setReadCB([](const string &pkt) {
             onReadEvent(pkt);
         });
 
-        //ÉèÖÃ»·ĞÎ»º´æÏú»ÙÊÂ¼ş
+        //è®¾ç½®ç¯å½¢ç¼“å­˜é”€æ¯äº‹ä»¶
         ringReader->setDetachCB([]() {
             onDetachEvent();
         });
@@ -71,24 +71,24 @@ int main() {
 
 
     thread_group group;
-    //Ğ´Ïß³Ì
+    //å†™çº¿ç¨‹
     group.create_thread([]() {
         doWrite();
     });
 
-    //²âÊÔ3ÃëÖÓ
+    //æµ‹è¯•3ç§’é’Ÿ
     sleep(3);
 
-    //Í¨ÖªĞ´Ïß³ÌÍË³ö
+    //é€šçŸ¥å†™çº¿ç¨‹é€€å‡º
     g_bExitWrite = true;
-    //µÈ´ıĞ´Ïß³ÌÍË³ö
+    //ç­‰å¾…å†™çº¿ç¨‹é€€å‡º
     group.join_all();
 
-    //ÊÍ·Å»·ĞÎ»º³å£¬´ËÊ±Òì²½´¥·¢DetachÊÂ¼ş
+    //é‡Šæ”¾ç¯å½¢ç¼“å†²ï¼Œæ­¤æ—¶å¼‚æ­¥è§¦å‘Detachäº‹ä»¶
     g_ringBuf.reset();
-    //µÈ´ıÒì²½´¥·¢DetachÊÂ¼ş
+    //ç­‰å¾…å¼‚æ­¥è§¦å‘Detachäº‹ä»¶
     sleep(1);
-    //Ïû³ı¶ÔEventPoller¶ÔÏóµÄÒıÓÃ
+    //æ¶ˆé™¤å¯¹EventPollerå¯¹è±¡çš„å¼•ç”¨
     ringReader.reset();
     sleep(1);
     return 0;

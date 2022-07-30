@@ -20,22 +20,22 @@ using namespace toolkit;
 
 
 #define MAX_TASK_SIZE (1000 * 10000)
-semaphore g_sem;//ĞÅºÅÁ¿
+semaphore g_sem;//ä¿¡å·é‡
 atomic_llong g_produced(0);
 atomic_llong g_consumed(0);
 
-//Ïû·ÑÕßÏß³Ì
+//æ¶ˆè´¹è€…çº¿ç¨‹
 void onConsum() {
     while (true) {
         g_sem.wait();
         if (++g_consumed > g_produced) {
-            //Èç¹û´òÓ¡Õâ¾älogÔò±íÃ÷ÓĞbug
+            //å¦‚æœæ‰“å°è¿™å¥logåˆ™è¡¨æ˜æœ‰bug
             ErrorL << g_consumed << " > " << g_produced;
         }
     }
 }
 
-//Éú²úÕßÏß³Ì
+//ç”Ÿäº§è€…çº¿ç¨‹
 void onProduce() {
     while (true) {
         ++g_produced;
@@ -47,14 +47,14 @@ void onProduce() {
 }
 
 int main() {
-    //³õÊ¼»¯log
+    //åˆå§‹åŒ–log
     Logger::Instance().add(std::make_shared<ConsoleChannel>());
 
     Ticker ticker;
     thread_group thread_producer;
     for (size_t i = 0; i < thread::hardware_concurrency(); ++i) {
         thread_producer.create_thread([]() {
-            //1¸öÉú²úÕßÏß³Ì
+            //1ä¸ªç”Ÿäº§è€…çº¿ç¨‹
             onProduce();
         });
     }
@@ -62,24 +62,24 @@ int main() {
     thread_group thread_consumer;
     for (int i = 0; i < 4; ++i) {
         thread_consumer.create_thread([i]() {
-            //4¸öÏû·ÑÕßÏß³Ì
+            //4ä¸ªæ¶ˆè´¹è€…çº¿ç¨‹
             onConsum();
         });
     }
 
 
 
-    //µÈ´ıËùÓĞÉú³ÉÕßÏß³ÌÍË³ö
+    //ç­‰å¾…æ‰€æœ‰ç”Ÿæˆè€…çº¿ç¨‹é€€å‡º
     thread_producer.join_all();
-    DebugL << "Éú²úÕßÏß³ÌÍË³ö£¬ºÄÊ±:" << ticker.elapsedTime() << "ms," << "Éú²úÈÎÎñÊı:" << g_produced << ",Ïû·ÑÈÎÎñÊı:" << g_consumed;
+    DebugL << "ç”Ÿäº§è€…çº¿ç¨‹é€€å‡ºï¼Œè€—æ—¶:" << ticker.elapsedTime() << "ms," << "ç”Ÿäº§ä»»åŠ¡æ•°:" << g_produced << ",æ¶ˆè´¹ä»»åŠ¡æ•°:" << g_consumed;
 
     int i = 5;
     while (--i) {
-        DebugL << "³ÌĞòÍË³öµ¹¼ÆÊ±:" << i << ",Ïû·ÑÈÎÎñÊı:" << g_consumed;
+        DebugL << "ç¨‹åºé€€å‡ºå€’è®¡æ—¶:" << i << ",æ¶ˆè´¹ä»»åŠ¡æ•°:" << g_consumed;
         sleep(1);
     }
 
-    //³ÌĞòÇ¿ÖÆÍË³ö¿ÉÄÜcore dump£»ÔÚ³ÌĞòÍÆ³öÊ±£¬Éú²úµÄÈÎÎñÊıÓ¦¸Ã¸úÏû·ÑÈÎÎñÊıÒ»ÖÂ
-    WarnL << "Ç¿ÖÆ¹Ø±ÕÏû·ÑÏß³Ì£¬¿ÉÄÜ´¥·¢core dump";
+    //ç¨‹åºå¼ºåˆ¶é€€å‡ºå¯èƒ½core dumpï¼›åœ¨ç¨‹åºæ¨å‡ºæ—¶ï¼Œç”Ÿäº§çš„ä»»åŠ¡æ•°åº”è¯¥è·Ÿæ¶ˆè´¹ä»»åŠ¡æ•°ä¸€è‡´
+    WarnL << "å¼ºåˆ¶å…³é—­æ¶ˆè´¹çº¿ç¨‹ï¼Œå¯èƒ½è§¦å‘core dump";
     return 0;
 }
